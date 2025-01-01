@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="appframe-desktop">
+    <output-path>$PROJECT_DIR$/appframe/build/libs</output-path>
+    <root id="archive" name="appframe-desktop.jar">
+      <element id="module-output" name="appframe.appframe.desktopMain" />
+    </root>
+  </artifact>
+</component>
