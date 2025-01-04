@@ -34,8 +34,6 @@ fun AppFrame(
 	state: WindowState = rememberWindowState(size = DpSize(1024.dp, 720.dp)),
 	title: String = "AppName",
 	appThemeApplier: @Composable (@Composable () -> Unit) -> Unit = { it() },
-	backgroundColor: androidx.compose.ui.graphics.Color = MaterialTheme.colorScheme.surfaceVariant,
-	contentColor: androidx.compose.ui.graphics.Color = MaterialTheme.colorScheme.onSurfaceVariant,
 	content: @Composable () -> Unit,
 ) {
 	val screenSize = Toolkit.getDefaultToolkit().screenSize
@@ -55,8 +53,8 @@ fun AppFrame(
 		WindowDraggableArea {
 			appThemeApplier {
 				Surface(
-					color = backgroundColor,
-					contentColor = contentColor,
+					color = MaterialTheme.colorScheme.surfaceVariant,
+					contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
 					// Handle custom double-tap gestures since WindowDraggableArea captures pointer events for dragging
 					modifier = Modifier.pointerInput(Unit) {
 						awaitEachGesture {
