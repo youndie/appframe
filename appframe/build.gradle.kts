@@ -23,8 +23,9 @@ mavenPublishing {
 	coordinates(
 		groupId = "ru.workinprogress",
 		artifactId = "appframe",
-		version = "0.0.1-snapshot"
+		version = "0.0.${providers.gradleProperty("BUILD_NUMBER").getOrElse("1-snapshot")}"
 	)
+
 	pom {
 		name.set("AppFrame")
 

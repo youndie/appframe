@@ -4,11 +4,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.waitForUpOrCancellation
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.window.WindowDraggableArea
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -19,44 +15,27 @@ import androidx.compose.material.icons.sharp.Close
 import androidx.compose.material.icons.sharp.FullscreenExit
 import androidx.compose.material.icons.sharp.Minimize
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.AwaitPointerEventScope
 import androidx.compose.ui.input.pointer.PointerInputChange
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Window
-import androidx.compose.ui.window.WindowPlacement
-import androidx.compose.ui.window.WindowPosition
-import androidx.compose.ui.window.WindowState
-import androidx.compose.ui.window.rememberWindowState
+import androidx.compose.ui.window.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.awt.Toolkit
 
-/**
- * Creates an application window with customizable theming, window state, and content. Supports operations
- * like minimizing, maximizing, fullscreen toggling, and close handling through gestures or buttons.
- *
- * @param onCloseRequest A lambda that is invoked when the close button is pressed or the close gesture is performed.
- * @param title The title of the application window. Defaults to "AppName".
- * @param appTheme A composable lambda to provide a custom theme for the application content.
- * @param state The window's state, including size, position, and placement. Defaults to a window size of 1024x720.
- * @param content The main content of the application window, provided as a composable lambda.
- */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun AppFrame(
 	onCloseRequest: () -> Unit,
-	title: String = "AppName",
-	appTheme: @Composable (@Composable () -> Unit) -> Unit = { it() },
 	state: WindowState = rememberWindowState(size = DpSize(1024.dp, 720.dp)),
+	title: String = "AppName",
+	appThemeApplier: @Composable (@Composable () -> Unit) -> Unit = { it() },
+	backgroundColor: androidx.compose.ui.graphics.Color = MaterialTheme.colorScheme.surfaceVariant,
+	contentColor: androidx.compose.ui.graphics.Color = MaterialTheme.colorScheme.onSurfaceVariant,
 	content: @Composable () -> Unit,
 ) {
 	val screenSize = Toolkit.getDefaultToolkit().screenSize
@@ -74,10 +53,10 @@ fun AppFrame(
 		title = title,
 	) {
 		WindowDraggableArea {
-			appTheme {
+			appThemeApplier {
 				Surface(
-					color = MaterialTheme.colorScheme.surfaceVariant,
-					contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+					color = backgroundColor,
+					contentColor = contentColor,
 					// Handle custom double-tap gestures since WindowDraggableArea captures pointer events for dragging
 					modifier = Modifier.pointerInput(Unit) {
 						awaitEachGesture {
