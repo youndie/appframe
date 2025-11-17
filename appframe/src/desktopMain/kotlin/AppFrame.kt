@@ -57,29 +57,30 @@ fun AppFrame(
                         color = MaterialTheme.colorScheme.surfaceVariant,
                         contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
                         // Handle custom double-tap gestures since WindowDraggableArea captures pointer events for dragging
-                        modifier = Modifier.pointerInput(Unit) {
-                            awaitEachGesture {
-                                val firstDown = awaitFirstDown()
-                                val firstUp = waitForUpOrCancellation() ?: return@awaitEachGesture
-                                val secondDown = awaitSecondDown(firstUp) ?: return@awaitEachGesture
+                        modifier =
+                            Modifier.pointerInput(Unit) {
+                                awaitEachGesture {
+                                    val firstDown = awaitFirstDown()
+                                    val firstUp = waitForUpOrCancellation() ?: return@awaitEachGesture
+                                    val secondDown = awaitSecondDown(firstUp) ?: return@awaitEachGesture
 
-                                if (state.placement == WindowPlacement.Maximized) {
-                                    state.placement = WindowPlacement.Floating
-                                    coroutineScope.launch {
-                                        delay(10)
-                                        state.size = savedSize
-                                        state.position = savedPosition
-                                    }
-                                } else {
-                                    savedSize = state.size
-                                    savedPosition = state.position
-                                    coroutineScope.launch {
-                                        delay(10)
-                                        state.placement = WindowPlacement.Maximized
+                                    if (state.placement == WindowPlacement.Maximized) {
+                                        state.placement = WindowPlacement.Floating
+                                        coroutineScope.launch {
+                                            delay(10)
+                                            state.size = savedSize
+                                            state.position = savedPosition
+                                        }
+                                    } else {
+                                        savedSize = state.size
+                                        savedPosition = state.position
+                                        coroutineScope.launch {
+                                            delay(10)
+                                            state.placement = WindowPlacement.Maximized
+                                        }
                                     }
                                 }
-                            }
-                        }
+                            },
                     ) {
                         Box(modifier = Modifier.height(32.dp)) {
                             Row(verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
@@ -89,7 +90,7 @@ fun AppFrame(
                                     Icon(
                                         Icons.Sharp.Close,
                                         modifier = Modifier.size(24.dp),
-                                        contentDescription = "close"
+                                        contentDescription = "close",
                                     )
                                 }
 
@@ -106,7 +107,7 @@ fun AppFrame(
                                         Icon(
                                             Icons.Sharp.FullscreenExit,
                                             modifier = Modifier.size(24.dp),
-                                            contentDescription = "fullscreen"
+                                            contentDescription = "fullscreen",
                                         )
                                     }
                                 } else {
@@ -116,7 +117,7 @@ fun AppFrame(
                                         Icon(
                                             Icons.Sharp.Minimize,
                                             modifier = Modifier.size(24.dp),
-                                            contentDescription = "minimize"
+                                            contentDescription = "minimize",
                                         )
                                     }
 
@@ -134,7 +135,7 @@ fun AppFrame(
                                         Icon(
                                             Icons.Sharp.FullscreenExit,
                                             modifier = Modifier.size(24.dp),
-                                            contentDescription = "fullscreen"
+                                            contentDescription = "fullscreen",
                                         )
                                     }
                                 }
@@ -142,7 +143,7 @@ fun AppFrame(
                             Text(
                                 title,
                                 modifier = Modifier.fillMaxWidth().align(androidx.compose.ui.Alignment.Center),
-                                textAlign = androidx.compose.ui.text.style.TextAlign.Center
+                                textAlign = androidx.compose.ui.text.style.TextAlign.Center,
                             )
                         }
                     }
@@ -153,14 +154,13 @@ fun AppFrame(
     }
 }
 
-//Copy from CMP
-private suspend fun AwaitPointerEventScope.awaitSecondDown(
-    firstUp: PointerInputChange,
-): PointerInputChange? = withTimeoutOrNull(viewConfiguration.doubleTapTimeoutMillis) {
-    val minUptime = firstUp.uptimeMillis + viewConfiguration.doubleTapMinTimeMillis
-    var change: PointerInputChange
-    do {
-        change = awaitFirstDown()
-    } while (change.uptimeMillis < minUptime)
-    change
-}
+// Copy from CMP
+private suspend fun AwaitPointerEventScope.awaitSecondDown(firstUp: PointerInputChange): PointerInputChange? =
+    withTimeoutOrNull(viewConfiguration.doubleTapTimeoutMillis) {
+        val minUptime = firstUp.uptimeMillis + viewConfiguration.doubleTapMinTimeMillis
+        var change: PointerInputChange
+        do {
+            change = awaitFirstDown()
+        } while (change.uptimeMillis < minUptime)
+        change
+    }
