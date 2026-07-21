@@ -1,0 +1,42 @@
+name: Build
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ ubuntu-latest, windows-latest, macos-latest ]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v5
+      - name: Setup Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: 'temurin'
+          java-version: 21
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+      - name: Build and test
+        run: ./gradlew build --stacktrace
+
+      # Linux only: goldens come from this same runner image (see record-goldens.yml), and Skia's
+      # text rendering differs enough across platforms to fail anywhere else.
+      - name: Verify screenshots
+        if: matrix.os == 'ubuntu-latest'
+        run: ./gradlew :appframe:screenshotTest -Pviddik.verify --stacktrace
+
+      - name: Upload screenshot diffs
+        if: failure() && matrix.os == 'ubuntu-latest'
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshot-diffs
+          path: appframe/build/reports/screenshots/*.png
+          if-no-files-found: ignore
+          retention-days: 7

@@ -1,4 +1,4 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -10,6 +10,12 @@ compose {
     desktop {
         application {
             mainClass = "ru.workinprogress.appframe.MainKt"
+
+            nativeDistributions {
+                targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
+                packageName = "AppFrame"
+                packageVersion = "1.0.0"
+            }
         }
     }
 }
@@ -17,8 +23,7 @@ compose {
 kotlin {
     jvmToolchain(21)
 
-    jvm("desktop") {
-    }
+    jvm("desktop")
 
     sourceSets {
         val desktopMain by getting
@@ -26,7 +31,7 @@ kotlin {
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutines.swing)
-            implementation(project(":appframe"))
+            implementation(projects.appframe)
         }
         commonMain.dependencies {
             implementation(compose.runtime)

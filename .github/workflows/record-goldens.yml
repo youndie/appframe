@@ -1,0 +1,49 @@
+name: Record screenshot goldens
+
+# Skia renders text with whatever fonts the host happens to have, so a golden recorded on a macOS
+# dev machine never matches an ubuntu-latest runner. Goldens therefore always come from CI:
+#
+#   Actions -> "Record screenshot goldens" -> Run workflow
+#   -> download the "appframe-goldens" artifact
+#   -> replace appframe/src/desktopTest/snapshots/*.png with its contents
+#   -> commit
+#
+# The verify step in build.yml runs on the same runner image, so what is recorded here is what is
+# checked there.
+
+on:
+  workflow_dispatch:
+
+jobs:
+  record:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v5
+      - name: Setup Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: 'temurin'
+          java-version: 21
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+      - name: Record goldens
+        env:
+          VIDDIK_RECORD_MODE: true
+        run: ./gradlew :appframe:screenshotTest --rerun --no-daemon
+      - name: Upload goldens
+        uses: actions/upload-artifact@v4
+        with:
+          name: appframe-goldens
+          path: appframe/src/desktopTest/snapshots/*.png
+          retention-days: 7
+      - name: Summary
+        run: |
+          {
+            echo "### Goldens recorded"
+            echo
+            echo 'Download the `appframe-goldens` artifact, unzip it over'
+            echo '`appframe/src/desktopTest/snapshots/`, and commit the result.'
+            echo
+            echo 'Record mode does not validate anything — look at the PNGs before committing.'
+          } >> "$GITHUB_STEP_SUMMARY"

@@ -1,23 +1,26 @@
 [versions]
-agp = "8.13.1"
-compose-multiplatform = "1.9.1"
-kotlin = "2.2.21"
-kotlinx-coroutines = "1.10.2"
-maven-publish="0.28.0"
-baselineprofile = "1.4.1"
+compose-multiplatform = "1.11.1"
+kotlin = "2.4.10"
+kotlinx-coroutines = "1.11.0"
+maven-publish = "0.37.0"
+ksp = "2.3.10"
+viddik = "0.0.1.5"
+junit-jupiter = "5.10.1"
+junit-platform = "1.10.1"
 
 [libraries]
 kotlinx-coroutines-swing = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }
+kotlin-test = { group = "org.jetbrains.kotlin", name = "kotlin-test", version.ref = "kotlin" }
+compose-ui-tooling-preview = { group = "org.jetbrains.compose.ui", name = "ui-tooling-preview", version.ref = "compose-multiplatform" }
+viddik-annotations = { group = "ru.workinprogress", name = "viddik-annotations", version.ref = "viddik" }
+viddik-testing-core = { group = "ru.workinprogress", name = "viddik-testing-core", version.ref = "viddik" }
+viddik-processor = { group = "ru.workinprogress", name = "viddik-processor", version.ref = "viddik" }
+junit-jupiter-engine = { group = "org.junit.jupiter", name = "junit-jupiter-engine", version.ref = "junit-jupiter" }
+junit-platform-launcher = { group = "org.junit.platform", name = "junit-platform-launcher", version.ref = "junit-platform" }
 
 [plugins]
-androidApplication = { id = "com.android.application", version.ref = "agp" }
-androidLibrary = { id = "com.android.library", version.ref = "agp" }
 composeMultiplatform = { id = "org.jetbrains.compose", version.ref = "compose-multiplatform" }
 composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
-kotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
-pluginSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
-androidTest = { id = "com.android.test", version.ref = "agp" }
-kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-baselineprofile = { id = "androidx.baselineprofile", version.ref = "baselineprofile" }
 mavenPublish = { id = "com.vanniktech.maven.publish", version.ref = "maven-publish" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }

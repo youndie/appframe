@@ -2,13 +2,6 @@ enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 pluginManagement {
     repositories {
-        google {
-            content {
-                includeGroupByRegex("com\\.android.*")
-                includeGroupByRegex("com\\.google.*")
-                includeGroupByRegex("androidx.*")
-            }
-        }
         mavenCentral()
         gradlePluginPortal()
     }
@@ -16,6 +9,7 @@ pluginManagement {
 
 dependencyResolutionManagement {
     repositories {
+        // Compose Multiplatform pulls androidx artifacts that are only published to Google's repo.
         google {
             mavenContent {
                 includeGroupAndSubgroups("androidx")
@@ -24,12 +18,13 @@ dependencyResolutionManagement {
             }
         }
         mavenCentral()
-        // Desktop target has to add this repo
-        maven("https://reposilite.kotlin.website/releases")
+        // Screenshot testing toolkit — https://github.com/youndie/viddik
+        maven("https://reposilite.kotlin.website/snapshots")
     }
 }
 
-rootProject.name = "appframe-master"
+// Must differ from the ":appframe" subproject name — typesafe project accessors clash otherwise.
+rootProject.name = "appframe-root"
 
 include(":app")
 include(":appframe")
