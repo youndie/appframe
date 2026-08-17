@@ -32,7 +32,7 @@ jobs:
       - name: Record goldens
         run: ./gradlew :appframe:viddikRecord --no-daemon
       - name: Upload goldens
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: appframe-goldens
           path: appframe/src/desktopTest/snapshots/*.png
