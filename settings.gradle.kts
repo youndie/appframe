@@ -4,6 +4,8 @@ pluginManagement {
     repositories {
         mavenCentral()
         gradlePluginPortal()
+        // The viddik Gradle plugin lives here, not on the plugin portal.
+        maven("https://reposilite.kotlin.website/snapshots")
     }
 }
 

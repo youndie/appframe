@@ -27,10 +27,10 @@ jobs:
           java-version: 21
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
+      # `viddikRecord` sets VIDDIK_RECORD_MODE itself and never reports up to date, so neither the
+      # environment variable nor `--rerun` belongs here any more.
       - name: Record goldens
-        env:
-          VIDDIK_RECORD_MODE: true
-        run: ./gradlew :appframe:screenshotTest --rerun --no-daemon
+        run: ./gradlew :appframe:viddikRecord --no-daemon
       - name: Upload goldens
         uses: actions/upload-artifact@v4
         with:

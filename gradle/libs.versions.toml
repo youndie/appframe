@@ -4,19 +4,14 @@ kotlin = "2.4.10"
 kotlinx-coroutines = "1.11.0"
 maven-publish = "0.37.0"
 ksp = "2.3.10"
-viddik = "0.0.1.5"
-junit-jupiter = "5.10.1"
-junit-platform = "1.10.1"
+# One version ref covers both the Gradle plugin and the artifacts it adds: the plugin defaults them
+# to its own version, which is what keeps the KSP processor and the capture engine in step.
+viddik = "0.1.2.12"
 
 [libraries]
 kotlinx-coroutines-swing = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }
 kotlin-test = { group = "org.jetbrains.kotlin", name = "kotlin-test", version.ref = "kotlin" }
 compose-ui-tooling-preview = { group = "org.jetbrains.compose.ui", name = "ui-tooling-preview", version.ref = "compose-multiplatform" }
-viddik-annotations = { group = "ru.workinprogress", name = "viddik-annotations", version.ref = "viddik" }
-viddik-testing-core = { group = "ru.workinprogress", name = "viddik-testing-core", version.ref = "viddik" }
-viddik-processor = { group = "ru.workinprogress", name = "viddik-processor", version.ref = "viddik" }
-junit-jupiter-engine = { group = "org.junit.jupiter", name = "junit-jupiter-engine", version.ref = "junit-jupiter" }
-junit-platform-launcher = { group = "org.junit.platform", name = "junit-platform-launcher", version.ref = "junit-platform" }
 
 [plugins]
 composeMultiplatform = { id = "org.jetbrains.compose", version.ref = "compose-multiplatform" }
@@ -24,3 +19,4 @@ composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "k
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 mavenPublish = { id = "com.vanniktech.maven.publish", version.ref = "maven-publish" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+viddik = { id = "ru.workinprogress.viddik", version.ref = "viddik" }

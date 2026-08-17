@@ -28,9 +28,11 @@ jobs:
 
       # Linux only: goldens come from this same runner image (see record-goldens.yml), and Skia's
       # text rendering differs enough across platforms to fail anywhere else.
+      # `-Pviddik.verify` only matters for wiring the task into `check`; invoking it by name doesn't
+      # need the flag.
       - name: Verify screenshots
         if: matrix.os == 'ubuntu-latest'
-        run: ./gradlew :appframe:screenshotTest -Pviddik.verify --stacktrace
+        run: ./gradlew :appframe:viddikVerify --stacktrace
 
       - name: Upload screenshot diffs
         if: failure() && matrix.os == 'ubuntu-latest'

@@ -93,23 +93,30 @@ parameterized fixture in `appframe/src/desktopTest/.../TitleBarScreenshots.kt` p
 platform layout (Windows, Windows maximized, macOS focused/unfocused, GNOME, left-side Linux), each
 in light and dark.
 
-They live in their own Gradle task rather than in `check`, because goldens are host-specific:
+The wiring comes from viddik's Gradle plugin (`id("ru.workinprogress.viddik")` in
+`appframe/build.gradle.kts`), which puts the tests in their own task rather than in `check`, because
+goldens are host-specific:
 
 ```shell
-./gradlew :appframe:screenshotTest                # verify
-VIDDIK_RECORD_MODE=true ./gradlew :appframe:screenshotTest --rerun   # record
-./gradlew check -Pviddik.verify                   # wire verification into `check` (CI does this)
+./gradlew :appframe:viddikVerify                           # verify all 14
+./gradlew :appframe:viddikVerify --component "Linux GNOME" # just one layout, light and dark
+./gradlew check -Pviddik.verify                            # wire verification into `check` (CI does this)
+./gradlew :appframe:viddikShowroom                         # browse the fixtures in a window
 ```
 
-Committed goldens are recorded by the **Record screenshot goldens** workflow, on the same runner
-image that verifies them in CI — see `appframe/src/desktopTest/snapshots/README.md`. Until that
-workflow has been run once, the CI screenshot step fails with `No golden snapshot for …`, which is
-the signal to record.
+Committed goldens are recorded by the **Record screenshot goldens** workflow (`viddikRecord` on the
+same runner image that verifies them in CI) — see `appframe/src/desktopTest/snapshots/README.md`.
+Until that workflow has been run once, the CI screenshot step fails with `No golden snapshot for …`,
+which is the signal to record.
 
-> Prefer verifying locally instead? viddik's `ViddikConsistentRendering` bundles a font and pins
-> rasterization so goldens become portable across OSes, at the cost of visibly rougher text — set
-> the `viddik.consistentRendering` system property on the test task and build the fixture theme with
-> `viddikTypography()`.
+Verifying on a dev machine still fails by ~1% per fixture, and the cause is fonts: viddik makes glyph
+*rasterization* OS-independent by itself, but it draws through whatever font the host has installed,
+and the title bar's label is rendered in a different one on each OS.
+
+> Want goldens that verify anywhere, including locally? Build the fixture theme with viddik's
+> `viddikTypography()`, which bundles Roboto — or bundle appframe's own font file and run its bytes
+> through `normalizeVerticalMetrics()`. Then the goldens stop being runner-specific and the CI-only
+> recording dance goes away.
 
 ## Running the sample
 
