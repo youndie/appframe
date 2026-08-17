@@ -26,7 +26,7 @@ jobs:
           distribution: 'temurin'
           java-version: 21
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v4
+        uses: gradle/actions/setup-gradle@v6
       # `viddikRecord` sets VIDDIK_RECORD_MODE itself and never reports up to date, so neither the
       # environment variable nor `--rerun` belongs here any more.
       - name: Record goldens
