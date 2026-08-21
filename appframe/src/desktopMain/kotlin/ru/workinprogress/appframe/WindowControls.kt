@@ -20,7 +20,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalWindowInfo
-import androidx.compose.ui.window.WindowPlacement
 import androidx.compose.ui.window.WindowState
 
 /**
@@ -30,6 +29,7 @@ import androidx.compose.ui.window.WindowState
 internal fun WindowControls(
     state: WindowState,
     style: TitleBarStyle,
+    fullscreen: FullscreenFallback,
     onCloseRequest: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -46,6 +46,7 @@ internal fun WindowControls(
                 control = control,
                 state = state,
                 style = style,
+                fullscreen = fullscreen,
                 groupHovered = groupHovered,
                 onCloseRequest = onCloseRequest,
             )
@@ -58,17 +59,20 @@ private fun WindowControlButton(
     control: WindowControl,
     state: WindowState,
     style: TitleBarStyle,
+    fullscreen: FullscreenFallback,
     groupHovered: Boolean,
     onCloseRequest: () -> Unit,
 ) {
     val interaction = remember { MutableInteractionSource() }
     val hovered by interaction.collectIsHoveredAsState()
-    val enabled = control != WindowControl.Minimize || state.placement != WindowPlacement.Fullscreen
+    val window = LocalAppFrameWindow.current
+    val isFullscreen = state.isFullscreenWith(fullscreen)
+    val enabled = control != WindowControl.Minimize || !isFullscreen
 
     val onClick: () -> Unit =
         when (control) {
             WindowControl.Minimize -> ({ state.isMinimized = true })
-            WindowControl.Maximize -> ({ state.toggleMaximized(style.maximizeAction) })
+            WindowControl.Maximize -> ({ state.toggleZoom(style.maximizeAction, window, fullscreen) })
             WindowControl.Close -> onCloseRequest
         }
 
@@ -84,7 +88,7 @@ private fun WindowControlButton(
 
             WindowControl.Maximize -> {
                 when {
-                    style.maximizeAction == MaximizeAction.Fullscreen && state.isFullscreen -> Glyph.Collapse
+                    style.maximizeAction == MaximizeAction.Fullscreen && isFullscreen -> Glyph.Collapse
                     style.maximizeAction == MaximizeAction.Fullscreen -> Glyph.Expand
                     state.isMaximized -> Glyph.Restore
                     else -> Glyph.Maximize

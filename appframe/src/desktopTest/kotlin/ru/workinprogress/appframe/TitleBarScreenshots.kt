@@ -8,6 +8,7 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.platform.WindowInfo
 import androidx.compose.ui.tooling.preview.PreviewParameter
@@ -17,6 +18,7 @@ import androidx.compose.ui.window.WindowState
 import ru.workinprogress.viddik.LocalViddikDarkTheme
 import ru.workinprogress.viddik.annotations.ViddikPreviewLabel
 import ru.workinprogress.viddik.annotations.ViddikScreenshot
+import ru.workinprogress.viddik.core.viddikTypography
 
 /**
  * Screenshot fixtures for the title bar.
@@ -29,6 +31,8 @@ data class TitleBarFixture(
     val style: TitleBarStyle,
     val placement: WindowPlacement = WindowPlacement.Floating,
     val windowFocused: Boolean = true,
+    /** Menus are drawn closed — a dropdown is a popup, and a popup is not part of this capture. */
+    val menus: Boolean = false,
 ) : ViddikPreviewLabel {
     override val previewLabel: String get() = label
 }
@@ -58,6 +62,10 @@ class TitleBarFixtures : PreviewParameterProvider<TitleBarFixture> {
                 "Linux left side",
                 TitleBarStyle.Linux.withGtkButtonLayout(parseGtkButtonLayout("'close,minimize,maximize:'")),
             ),
+            // With menus in the row a centered title is centered on what they leave over, rather
+            // than on the window — the two layouts are worth a golden each.
+            TitleBarFixture("Windows with menus", TitleBarStyle.Windows, menus = true),
+            TitleBarFixture("macOS with menus", TitleBarStyle.MacOs, menus = true),
         )
 }
 
@@ -74,14 +82,34 @@ fun TitleBarPreview(
                     onCloseRequest = {},
                     title = "AppFrame",
                     style = fixture.style,
+                    menuBar = if (fixture.menus) DemoMenus else null,
                 )
             }
         }
     }
 }
 
+private val DemoMenus: @Composable MenuBarScope.() -> Unit = {
+    Menu("File") {
+        Item("New", shortcut = MenuShortcut.primary(Key.N, os = HostOs.Windows)) {}
+    }
+    Menu("Edit") { Item("Undo") {} }
+    Menu("Help", enabled = false) { Item("About") {} }
+}
+
+/**
+ * The fixture theme, drawn in viddik's bundled Roboto rather than in whatever the host has.
+ *
+ * That is what makes the goldens portable: appframe ships no font of its own, and left to the
+ * platform default the same label is rasterized from a different typeface on each OS — which is why
+ * these goldens used to have to be recorded on the runner that verified them.
+ */
 @Composable
 private fun ScreenshotTheme(content: @Composable () -> Unit) {
     val dark = LocalViddikDarkTheme.current
-    MaterialTheme(colorScheme = if (dark) darkColorScheme() else lightColorScheme(), content = content)
+    MaterialTheme(
+        colorScheme = if (dark) darkColorScheme() else lightColorScheme(),
+        typography = viddikTypography(),
+        content = content,
+    )
 }
