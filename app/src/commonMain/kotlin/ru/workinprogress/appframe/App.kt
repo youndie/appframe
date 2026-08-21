@@ -23,6 +23,7 @@ fun App(
     platforms: List<String>,
     selected: String,
     onSelect: (String) -> Unit,
+    lastCommand: String,
     modifier: Modifier = Modifier,
 ) {
     Surface(modifier, color = MaterialTheme.colorScheme.surface) {
@@ -55,7 +56,12 @@ fun App(
                 }
             }
             Text(
-                "Double-click the title bar to maximize.",
+                "Double-click the title bar to maximize. Menus live in the title bar too.",
+                style = MaterialTheme.typography.bodySmall,
+                textAlign = TextAlign.Center,
+            )
+            Text(
+                "Last menu command: $lastCommand",
                 style = MaterialTheme.typography.bodySmall,
                 textAlign = TextAlign.Center,
             )

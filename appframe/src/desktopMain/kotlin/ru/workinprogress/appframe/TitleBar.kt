@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -31,6 +32,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.WindowState
+import java.awt.Window
 
 /**
  * The bar drawn above [AppFrame]'s content: title, optional [actions] and the window controls.
@@ -39,6 +41,12 @@ import androidx.compose.ui.window.WindowState
  *
  * [icon] is drawn only next to a start-aligned title, i.e. the Windows layout — macOS and GNOME
  * don't put an app icon in the title bar, so it is ignored by those styles.
+ *
+ * A [menuBar] is laid out after the icon, the way a single-row title bar with menus is arranged
+ * everywhere from VS Code to a GNOME header bar. It also takes over where the title goes: with
+ * menus in the row the title is centered on what they leave over and drawn a step back, whatever
+ * [TitleBarStyle.titleAlignment] says. A start-aligned title would otherwise sit right against the
+ * last menu in the same size and weight, and read as one more menu.
  */
 @Composable
 public fun TitleBar(
@@ -50,16 +58,24 @@ public fun TitleBar(
     style: TitleBarStyle = TitleBarStyle.forHost(),
     color: Color = MaterialTheme.colorScheme.surfaceVariant,
     contentColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
+    menuBar: (@Composable MenuBarScope.() -> Unit)? = null,
     actions: @Composable RowScope.() -> Unit = {},
 ) {
+    val fullscreen = rememberFullscreenFallback()
+
     Surface(color = color, contentColor = contentColor, modifier = modifier.fillMaxWidth()) {
         Box(
             Modifier
                 .fillMaxWidth()
                 .height(style.height)
-                .doubleClickToToggleMaximized(state, style.maximizeAction),
+                .doubleClickToToggleMaximized(
+                    state = state,
+                    action = style.maximizeAction,
+                    window = LocalAppFrameWindow.current,
+                    fullscreen = fullscreen,
+                ),
         ) {
-            if (style.titleAlignment == Alignment.CenterHorizontally) {
+            if (style.titleAlignment == Alignment.CenterHorizontally && menuBar == null) {
                 // Centered on the window, not on the space left over by the controls, so pad both
                 // sides by the width the controls reserve.
                 TitleText(
@@ -76,10 +92,12 @@ public fun TitleBar(
             Row(Modifier.fillMaxSize(), verticalAlignment = Alignment.CenterVertically) {
                 if (style.controlsAlignment == Alignment.Start) {
                     Spacer(Modifier.width(style.controlsPadding))
-                    WindowControls(state, style, onCloseRequest)
+                    WindowControls(state, style, fullscreen, onCloseRequest)
                 }
 
-                if (style.titleAlignment == Alignment.Start) {
+                val startAligned = style.titleAlignment == Alignment.Start
+
+                if (startAligned) {
                     Spacer(Modifier.width(LeadingInset))
                     if (icon != null) {
                         Image(
@@ -90,17 +108,40 @@ public fun TitleBar(
                         )
                         Spacer(Modifier.width(8.dp))
                     }
+                }
+
+                if (menuBar != null) {
+                    if (!startAligned) Spacer(Modifier.width(LeadingInset))
+                    AppMenuBar(content = menuBar)
+                    MenuBarSpacer()
+                }
+
+                when {
+                    // Menus override [TitleBarStyle.titleAlignment]. A start-aligned title lands
+                    // right after the last menu, in the same size and weight the menu labels use,
+                    // and reads as one more of them — so with menus the title is pushed into the
+                    // middle of whatever they leave over, and stepped back the way a title bar
+                    // draws a window title that is not the row's main content. VS Code does both.
+                    menuBar != null ->
+                        TitleText(
+                            title = title,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.weight(1f),
+                            alpha = SecondaryTitleAlpha,
+                        )
+
                     // The title itself soaks up the free space: a separate weighted spacer would
                     // split it with the (unfilled) title slot and leave a gap before the controls.
-                    TitleText(title = title, textAlign = TextAlign.Start, modifier = Modifier.weight(1f))
-                } else {
-                    Spacer(Modifier.weight(1f))
+                    startAligned ->
+                        TitleText(title = title, textAlign = TextAlign.Start, modifier = Modifier.weight(1f))
+
+                    else -> Spacer(Modifier.weight(1f))
                 }
 
                 actions()
 
                 if (style.controlsAlignment == Alignment.End) {
-                    WindowControls(state, style, onCloseRequest)
+                    WindowControls(state, style, fullscreen, onCloseRequest)
                     Spacer(Modifier.width(style.controlsPadding))
                 }
             }
@@ -111,15 +152,20 @@ public fun TitleBar(
 /** Gap between the window edge (or app icon) and a start-aligned title. */
 private val LeadingInset = 12.dp
 
+/** How far the title steps back from the menu labels when it shares the row with them. */
+private const val SecondaryTitleAlpha = 0.7f
+
 @Composable
 private fun TitleText(
     title: String,
     textAlign: TextAlign,
     modifier: Modifier = Modifier,
+    alpha: Float = 1f,
 ) {
     Text(
         text = title,
         modifier = modifier,
+        color = LocalContentColor.current.copy(alpha = alpha),
         textAlign = textAlign,
         maxLines = 1,
         overflow = TextOverflow.Ellipsis,
@@ -136,13 +182,15 @@ private fun TitleText(
 private fun Modifier.doubleClickToToggleMaximized(
     state: WindowState,
     action: MaximizeAction,
+    window: Window?,
+    fullscreen: FullscreenFallback,
 ): Modifier =
-    pointerInput(state, action) {
+    pointerInput(state, action, window, fullscreen) {
         awaitEachGesture {
             awaitFirstDown()
             val firstUp = waitForUpOrCancellation() ?: return@awaitEachGesture
             awaitSecondDown(firstUp) ?: return@awaitEachGesture
-            state.toggleMaximized(action)
+            state.toggleZoom(action, window, fullscreen)
         }
     }
 

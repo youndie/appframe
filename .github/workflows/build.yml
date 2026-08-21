@@ -23,22 +23,16 @@ jobs:
           java-version: 21
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
+      # Screenshot verification is part of `check`: the fixtures draw in viddik's bundled font, so
+      # the goldens are the same on every runner and there is nothing host-specific left to skip.
       - name: Build and test
         run: ./gradlew build --stacktrace
 
-      # Linux only: goldens come from this same runner image (see record-goldens.yml), and Skia's
-      # text rendering differs enough across platforms to fail anywhere else.
-      # `-Pviddik.verify` only matters for wiring the task into `check`; invoking it by name doesn't
-      # need the flag.
-      - name: Verify screenshots
-        if: matrix.os == 'ubuntu-latest'
-        run: ./gradlew :appframe:viddikVerify --stacktrace
-
       - name: Upload screenshot diffs
-        if: failure() && matrix.os == 'ubuntu-latest'
+        if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: screenshot-diffs
+          name: screenshot-diffs-${{ matrix.os }}
           path: appframe/build/reports/screenshots/*.png
           if-no-files-found: ignore
           retention-days: 7

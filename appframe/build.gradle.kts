@@ -81,19 +81,17 @@ kotlin {
 }
 
 /**
- * Screenshot tests live in `viddikVerify`, not in `desktopTest` — the plugin's default, and the
- * right one here.
+ * Screenshot tests run as part of `check`.
  *
- * Goldens are recorded on the CI runner (see `.github/workflows/record-goldens.yml`): Skia renders
- * text with whatever fonts the host has, so a golden recorded on macOS never matches Linux. Keeping
- * them out of `check` means a dev machine still gets a green `./gradlew build`, while CI — where the
- * fonts match the recording — runs `viddikVerify` directly.
+ * They used to be kept out of it: the goldens were host-specific, so they had to be recorded on the
+ * CI runner that verified them and a dev machine could not have gone green. Since the fixtures draw
+ * in viddik's bundled font (`viddikTypography()` in `TitleBarScreenshots.kt`) the goldens are the
+ * same everywhere, so `./gradlew build` verifies them wherever it runs.
+ *
+ * `snapshotsDir` defaults to src/desktopTest/snapshots, which is where the goldens are.
  */
 viddik {
-    // Already the plugin's default; stated here because it is a deliberate policy for this project,
-    // not an omission. `snapshotsDir` defaults to src/desktopTest/snapshots, which is where the
-    // goldens are.
-    verifyOnCheck = false
+    verifyOnCheck = true
 }
 
 tasks.withType<Test>().configureEach {

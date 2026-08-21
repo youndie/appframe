@@ -18,7 +18,14 @@ public enum class MaximizeAction {
     /** Fill the work area of the current screen, keeping the taskbar/dock visible. */
     Maximize,
 
-    /** Go true fullscreen — the macOS green-button behaviour. */
+    /**
+     * Cover the whole screen, taskbar/dock and menu bar included.
+     *
+     * On macOS this is not the native fullscreen the green button normally performs — AppKit will
+     * not grant that to an undecorated window, so [AppFrame] covers the screen through AWT
+     * instead: no separate Space, no slide animation, but the window really does fill the screen.
+     * See `Fullscreen.kt`.
+     */
     Fullscreen,
 }
 
@@ -100,7 +107,18 @@ public data class TitleBarStyle(
                 controlsPadding = 8.dp,
             )
 
-        /** macOS: traffic lights on the left, centered title. */
+        /**
+         * macOS: traffic lights on the left, centered title.
+         *
+         * The green button zooms rather than going fullscreen. macOS' own green button does go
+         * fullscreen, but that is a decorated window's privilege: AppKit silently ignores
+         * `toggleFullScreen:` on the borderless window an undecorated [AppFrame] is, and the
+         * window would keep its size while the title bar redrew as if it had not. Zooming — what
+         * an option-click on the green button does — is the closest behaviour that is real.
+         *
+         * `MacOs.copy(maximizeAction = MaximizeAction.Fullscreen)` still gets fullscreen, through
+         * the workaround [MaximizeAction.Fullscreen] describes.
+         */
         public val MacOs: TitleBarStyle =
             TitleBarStyle(
                 height = 28.dp,
@@ -112,7 +130,7 @@ public data class TitleBarStyle(
                 buttonSpacing = 8.dp,
                 controlsPadding = 12.dp,
                 glyphSize = 6.dp,
-                maximizeAction = MaximizeAction.Fullscreen,
+                maximizeAction = MaximizeAction.Maximize,
                 cornerRadius = 10.dp,
             )
 
