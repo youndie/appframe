@@ -5,6 +5,8 @@ plugins {
     alias(libs.plugins.mavenPublish)
     alias(libs.plugins.ksp)
     alias(libs.plugins.viddik)
+    id("ru.workinprogress.sborka.kmp")
+    id("ru.workinprogress.sborka.lint")
 }
 
 publishing {
@@ -22,10 +24,14 @@ publishing {
 }
 
 mavenPublishing {
+    // The group and the version come from the build rather than from this call: `sborka.group` and
+    // the `version` property, which CI passes as `-PVERSION`. They used to be written here alone,
+    // and `-PBUILD_NUMBER` reached the publication's coordinate while the archive tasks went on
+    // naming files after the project's version — a jar arriving under a number no release ever had.
     coordinates(
-        groupId = "ru.workinprogress",
+        groupId = project.group.toString(),
         artifactId = "appframe",
-        version = "0.0.${providers.gradleProperty("BUILD_NUMBER").getOrElse("1-snapshot")}",
+        version = project.version.toString(),
     )
 
     pom {
@@ -48,9 +54,6 @@ mavenPublishing {
 }
 
 kotlin {
-    jvmToolchain(21)
-    explicitApi()
-
     jvm("desktop")
 
     sourceSets {
@@ -80,16 +83,14 @@ kotlin {
     }
 }
 
-/**
- * Screenshot tests run as part of `check`.
- *
- * They used to be kept out of it: the goldens were host-specific, so they had to be recorded on the
- * CI runner that verified them and a dev machine could not have gone green. Since the fixtures draw
- * in viddik's bundled font (`viddikTypography()` in `TitleBarScreenshots.kt`) the goldens are the
- * same everywhere, so `./gradlew build` verifies them wherever it runs.
- *
- * `snapshotsDir` defaults to src/desktopTest/snapshots, which is where the goldens are.
- */
+// Screenshot tests run as part of `check`.
+//
+// They used to be kept out of it: the goldens were host-specific, so they had to be recorded on the
+// CI runner that verified them and a dev machine could not have gone green. Since the fixtures draw
+// in viddik's bundled font (`viddikTypography()` in `TitleBarScreenshots.kt`) the goldens are the
+// same everywhere, so `./gradlew build` verifies them wherever it runs.
+//
+// `snapshotsDir` defaults to src/desktopTest/snapshots, which is where the goldens are.
 viddik {
     verifyOnCheck = true
 }

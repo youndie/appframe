@@ -31,12 +31,16 @@ import androidx.compose.ui.window.rememberWindowState
  * [FrameWindowScope], so the AWT `window` is reachable — which is what a Swing
  * [androidx.compose.ui.window.MenuBar], a file dialog or a tray icon needs.
  */
-public interface AppFrameScope : ColumnScope, FrameWindowScope
+public interface AppFrameScope :
+    ColumnScope,
+    FrameWindowScope
 
 private class AppFrameScopeImpl(
     column: ColumnScope,
     frame: FrameWindowScope,
-) : AppFrameScope, ColumnScope by column, FrameWindowScope by frame
+) : AppFrameScope,
+    ColumnScope by column,
+    FrameWindowScope by frame
 
 /**
  * An undecorated [Window] with a title bar drawn by Compose.

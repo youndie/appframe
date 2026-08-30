@@ -43,7 +43,9 @@ data class TitleBarFixture(
  * that fixture flaked between runs (1.33% of pixels, i.e. exactly the three dots). Focus is a state
  * worth having a golden for, so it is pinned per fixture instead.
  */
-private class FixedWindowInfo(override val isWindowFocused: Boolean) : WindowInfo
+private class FixedWindowInfo(
+    override val isWindowFocused: Boolean,
+) : WindowInfo
 
 class TitleBarFixtures : PreviewParameterProvider<TitleBarFixture> {
     override val values: Sequence<TitleBarFixture> =
