@@ -1,12 +1,15 @@
 [versions]
-compose-multiplatform = "1.11.1"
+# The build conventions: the coordinate, the version, the toolchain, the jvm floor, the style and the
+# test platform. Bumping this changes how both modules are built.
+sborka = "0.1.0.18"
+compose-multiplatform = "1.12.0"
 kotlin = "2.4.10"
 kotlinx-coroutines = "1.11.0"
 maven-publish = "0.37.0"
-ksp = "2.3.10"
+ksp = "2.3.11"
 # One version ref covers both the Gradle plugin and the artifacts it adds: the plugin defaults them
 # to its own version, which is what keeps the KSP processor and the capture engine in step.
-viddik = "0.1.2.13"
+viddik = "0.3.0.16"
 
 [libraries]
 kotlinx-coroutines-swing = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }
@@ -20,3 +23,5 @@ kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref =
 mavenPublish = { id = "com.vanniktech.maven.publish", version.ref = "maven-publish" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 viddik = { id = "ru.workinprogress.viddik", version.ref = "viddik" }
+sborkaKmp = { id = "ru.workinprogress.sborka.kmp", version.ref = "sborka" }
+sborkaLint = { id = "ru.workinprogress.sborka.lint", version.ref = "sborka" }

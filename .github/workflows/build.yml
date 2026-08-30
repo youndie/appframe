@@ -15,14 +15,11 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout sources
-        uses: actions/checkout@v5
-      - name: Setup Java
-        uses: actions/setup-java@v5
-        with:
-          distribution: 'temurin'
-          java-version: 21
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v4
+        uses: actions/checkout@v7
+      # Java and Gradle in one step and at one version for the portfolio. What the modules compile
+      # to is `sborka.jvmToolchain=21`, fetched by the toolchain resolver.
+      - name: Setup Java and Gradle
+        uses: youndie/sborka/.github/actions/setup-kotlin@main
       # Screenshot verification is part of `check`: the fixtures draw in viddik's bundled font, so
       # the goldens are the same on every runner and there is nothing host-specific left to skip.
       - name: Build and test
@@ -30,7 +27,7 @@ jobs:
 
       - name: Upload screenshot diffs
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: screenshot-diffs-${{ matrix.os }}
           path: appframe/build/reports/screenshots/*.png
