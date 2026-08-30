@@ -1,7 +1,7 @@
 [versions]
 # The build conventions: the coordinate, the version, the toolchain, the jvm floor, the style and the
 # test platform. Bumping this changes how both modules are built.
-sborka = "0.1.0.18"
+sborka = "0.1.0.20"
 compose-multiplatform = "1.12.0"
 kotlin = "2.4.10"
 kotlinx-coroutines = "1.11.0"
