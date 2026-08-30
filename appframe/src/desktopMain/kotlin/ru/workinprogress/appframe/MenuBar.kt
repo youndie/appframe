@@ -170,7 +170,9 @@ private class MenuState {
 
 // -- rendering --------------------------------------------------------------------------------
 
-private class BarScope(private val bar: MenuBarState) : MenuBarScope {
+private class BarScope(
+    private val bar: MenuBarState,
+) : MenuBarScope {
     @Composable
     override fun Menu(
         text: String,
@@ -373,7 +375,9 @@ private fun MenuItemRow(
                     }
                 }
 
-                else -> null
+                else -> {
+                    null
+                }
             },
     )
 }
@@ -395,7 +399,7 @@ private fun Submenu(
 
     LaunchedEffect(hovered, enabled) {
         if (hovered && enabled) {
-            delay(SubmenuHoverDelayMillis)
+            delay(SUBMENU_HOVER_DELAY_MILLIS)
             parent.openIndex = index
         }
     }
@@ -441,11 +445,13 @@ private val MenuButtonCorner = 6.dp
 private val MarkSize = 16.dp
 
 /** Long enough that dragging the pointer past an item on the way down does not open it. */
-private const val SubmenuHoverDelayMillis = 180L
+private const val SUBMENU_HOVER_DELAY_MILLIS = 180L
 
 // -- shortcut collection ------------------------------------------------------------------------
 
-private class CollectingBarScope(private val registry: MenuShortcutRegistry) : MenuBarScope {
+private class CollectingBarScope(
+    private val registry: MenuShortcutRegistry,
+) : MenuBarScope {
     @Composable
     override fun Menu(
         text: String,

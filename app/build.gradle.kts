@@ -4,6 +4,8 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
+    id("ru.workinprogress.sborka.kmp")
+    id("ru.workinprogress.sborka.lint")
 }
 
 compose {
@@ -21,7 +23,11 @@ compose {
 }
 
 kotlin {
-    jvmToolchain(21)
+    // OFF here and on in `:appframe`, which is the difference between the two modules: explicit
+    // visibilities and return types are spelled out for a CONSUMER compiling against the artefact,
+    // and this module is the demo — nobody depends on it, and it publishes nothing. The conventions
+    // default it on because the library beside it is what they are shaped for.
+    explicitApi = org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode.Disabled
 
     jvm("desktop")
 

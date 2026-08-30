@@ -122,20 +122,24 @@ public fun TitleBar(
                     // and reads as one more of them — so with menus the title is pushed into the
                     // middle of whatever they leave over, and stepped back the way a title bar
                     // draws a window title that is not the row's main content. VS Code does both.
-                    menuBar != null ->
+                    menuBar != null -> {
                         TitleText(
                             title = title,
                             textAlign = TextAlign.Center,
                             modifier = Modifier.weight(1f),
-                            alpha = SecondaryTitleAlpha,
+                            alpha = SECONDARY_TITLE_ALPHA,
                         )
+                    }
 
                     // The title itself soaks up the free space: a separate weighted spacer would
                     // split it with the (unfilled) title slot and leave a gap before the controls.
-                    startAligned ->
+                    startAligned -> {
                         TitleText(title = title, textAlign = TextAlign.Start, modifier = Modifier.weight(1f))
+                    }
 
-                    else -> Spacer(Modifier.weight(1f))
+                    else -> {
+                        Spacer(Modifier.weight(1f))
+                    }
                 }
 
                 actions()
@@ -153,7 +157,7 @@ public fun TitleBar(
 private val LeadingInset = 12.dp
 
 /** How far the title steps back from the menu labels when it shares the row with them. */
-private const val SecondaryTitleAlpha = 0.7f
+private const val SECONDARY_TITLE_ALPHA = 0.7f
 
 @Composable
 private fun TitleText(

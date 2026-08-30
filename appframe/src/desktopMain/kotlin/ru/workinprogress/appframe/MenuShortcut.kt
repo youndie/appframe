@@ -93,7 +93,9 @@ internal fun MenuShortcut.label(os: HostOs = HostOs.current): String {
 }
 
 /** AWT already knows every key's localized name, and [Key] is an AWT key code on desktop. */
-private fun keyName(key: Key): String = java.awt.event.KeyEvent.getKeyText(key.nativeKeyCode)
+private fun keyName(key: Key): String =
+    java.awt.event.KeyEvent
+        .getKeyText(key.nativeKeyCode)
 
 /**
  * The shortcuts of every item currently in the menu tree, open or not.
@@ -125,5 +127,8 @@ internal class MenuShortcutRegistry {
         return true
     }
 
-    class Entry(val shortcut: MenuShortcut, val onTrigger: () -> Unit)
+    class Entry(
+        val shortcut: MenuShortcut,
+        val onTrigger: () -> Unit,
+    )
 }
