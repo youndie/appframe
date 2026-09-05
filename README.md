@@ -2,7 +2,7 @@
 
 [![kotlin](https://img.shields.io/badge/Kotlin-2.4.10-blue?logo=kotlin&logoColor=white)](https://kotlinlang.org)
 ![Static Badge](https://img.shields.io/badge/Desktop-blue)
-[![Maven Central](https://reposilite.kotlin.website/api/badge/latest/releases/ru/workinprogress/appframe-desktop?name=snapshots&color=40c14a&prefix=v)](https://reposilite.kotlin.website/#/releases/ru/workinprogress/appframe-desktop)
+[![Maven Central](https://reposilite.kotlin.website/api/badge/latest/releases/io/github/youndie/appframe-desktop?name=snapshots&color=40c14a&prefix=v)](https://reposilite.kotlin.website/#/releases/io/github/youndie/appframe-desktop)
 [![license](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
 A customizable window frame library for [Compose Multiplatform](https://www.jetbrains.com/compose-multiplatform/)
@@ -47,7 +47,7 @@ And the dependency:
 
 ```kotlin
 desktopMain.dependencies {
-    implementation("ru.workinprogress:appframe-desktop:0.0.{version}")
+    implementation("io.github.youndie:appframe-desktop:0.1.{version}")
 }
 ```
 

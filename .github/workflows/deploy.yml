@@ -19,4 +19,4 @@ jobs:
       - name: Test
         run: ./gradlew :appframe:desktopTest --no-daemon
       - name: Publish
-        run: ./gradlew appframe:publishDesktopPublicationToKotlinWebsiteRepository -PVERSION=0.0.${{github.run_number}} -PkotlinWebsiteUsername=${{secrets.REPOSILITE_USER}} -PkotlinWebsitePassword=${{secrets.REPOSILITE_PASSWORD}} --no-daemon
+        run: ./gradlew appframe:publishDesktopPublicationToKotlinWebsiteRepository -PVERSION=0.1.${{github.run_number}} -PkotlinWebsiteUsername=${{secrets.REPOSILITE_USER}} -PkotlinWebsitePassword=${{secrets.REPOSILITE_PASSWORD}} --no-daemon
