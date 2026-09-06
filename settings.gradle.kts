@@ -25,7 +25,7 @@ plugins {
     //
     // It also brings the check that this repository's `.editorconfig` is the one the rest of the
     // portfolio uses, which is the other half of pinning the formatter's version.
-    id("ru.workinprogress.sborka.settings") version "0.1.0.20"
+    id("ru.workinprogress.sborka.settings") version "0.2.0.30"
 }
 
 // Must differ from the ":appframe" subproject name — typesafe project accessors clash otherwise.
