@@ -1,4 +1,4 @@
-package ru.workinprogress.appframe
+package io.github.youndie.appframe
 
 import androidx.compose.ui.window.WindowPlacement
 import androidx.compose.ui.window.WindowState

@@ -1,4 +1,4 @@
-package ru.workinprogress.appframe
+package io.github.youndie.appframe
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth

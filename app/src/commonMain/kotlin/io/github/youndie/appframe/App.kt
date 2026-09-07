@@ -1,4 +1,4 @@
-package ru.workinprogress.appframe
+package io.github.youndie.appframe
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

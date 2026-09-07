@@ -1,4 +1,4 @@
-package ru.workinprogress.appframe
+package io.github.youndie.appframe
 
 import java.util.concurrent.TimeUnit
 

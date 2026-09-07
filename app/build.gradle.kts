@@ -11,7 +11,7 @@ plugins {
 compose {
     desktop {
         application {
-            mainClass = "ru.workinprogress.appframe.MainKt"
+            mainClass = "io.github.youndie.appframe.MainKt"
 
             nativeDistributions {
                 targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)

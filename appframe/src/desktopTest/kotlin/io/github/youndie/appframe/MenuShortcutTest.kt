@@ -1,4 +1,4 @@
-package ru.workinprogress.appframe
+package io.github.youndie.appframe
 
 import androidx.compose.ui.InternalComposeUiApi
 import androidx.compose.ui.input.key.Key

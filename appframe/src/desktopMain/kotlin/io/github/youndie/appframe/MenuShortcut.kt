@@ -1,4 +1,4 @@
-package ru.workinprogress.appframe
+package io.github.youndie.appframe
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.input.key.Key
