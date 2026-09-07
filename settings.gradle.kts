@@ -4,9 +4,11 @@ pluginManagement {
     repositories {
         mavenCentral()
         gradlePluginPortal()
-        // The viddik Gradle plugin lives here, not on the plugin portal, and so do the build
-        // conventions. It has to be spelled out by hand: `pluginManagement` is evaluated before any
-        // settings plugin is applied — including the sborka one, which is fetched through it.
+        // The build conventions live here, not on the plugin portal. They have to be spelled out
+        // by hand: `pluginManagement` is evaluated before any settings plugin is applied —
+        // including the sborka one, which is fetched through it. The viddik plugin used to be the
+        // other reason for this line and is not any more: 0.4.0 is on Maven Central, declared
+        // above, and this server answers 404 for it.
         //
         // FILTERED, which it was not: an unfiltered repository takes part in resolving EVERY plugin,
         // so it is asked for coordinates it has never heard of, and the day its host is unreachable
@@ -14,12 +16,11 @@ pluginManagement {
         maven("https://reposilite.kotlin.website/snapshots") {
             name = "wip-snapshots"
             content {
-                // Both groups on purpose. The portfolio is moving to `io.github.youndie` and sborka
-                // is already there — the plugin marker and the jar behind it are under the new one.
-                // The old one is held by the library versions published before the move: they are
-                // still on the server and resolve as before.
+                // One group, and it is the only one there can be. The portfolio's move to
+                // `io.github.youndie` is finished: nothing this build resolves is under
+                // `ru.workinprogress` any more, and a filter naming a group the server is never asked
+                // about reads as a dependency that is still there.
                 includeGroupByRegex("io\\.github\\.youndie.*")
-                includeGroupByRegex("ru\\.workinprogress.*")
             }
         }
     }
@@ -27,8 +28,8 @@ pluginManagement {
 
 plugins {
     // Where dependencies are looked for: google() and mavenCentral() with their group filters, and
-    // the snapshot repository viddik is published to — filtered there too, for the same reason as
-    // above. This file declared all three itself, the last one unfiltered.
+    // the snapshot repository the portfolio's own libraries are published to — filtered there too,
+    // for the same reason as above. This file declared all three itself, the last one unfiltered.
     //
     // It also brings the check that this repository's `.editorconfig` is the one the rest of the
     // portfolio uses, which is the other half of pinning the formatter's version.
