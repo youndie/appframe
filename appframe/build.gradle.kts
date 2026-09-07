@@ -5,8 +5,8 @@ plugins {
     alias(libs.plugins.mavenPublish)
     alias(libs.plugins.ksp)
     alias(libs.plugins.viddik)
-    id("ru.workinprogress.sborka.kmp")
-    id("ru.workinprogress.sborka.lint")
+    id("io.github.youndie.sborka.kmp")
+    id("io.github.youndie.sborka.lint")
 }
 
 publishing {
