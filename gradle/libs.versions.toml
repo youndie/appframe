@@ -1,7 +1,7 @@
 [versions]
 # The build conventions: the coordinate, the version, the toolchain, the jvm floor, the style and the
 # test platform. Bumping this changes how both modules are built.
-sborka = "0.1.0.20"
+sborka = "0.3.0.41"
 compose-multiplatform = "1.12.0"
 kotlin = "2.4.10"
 kotlinx-coroutines = "1.11.0"
@@ -23,5 +23,5 @@ kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref =
 mavenPublish = { id = "com.vanniktech.maven.publish", version.ref = "maven-publish" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 viddik = { id = "ru.workinprogress.viddik", version.ref = "viddik" }
-sborkaKmp = { id = "ru.workinprogress.sborka.kmp", version.ref = "sborka" }
-sborkaLint = { id = "ru.workinprogress.sborka.lint", version.ref = "sborka" }
+sborkaKmp = { id = "io.github.youndie.sborka.kmp", version.ref = "sborka" }
+sborkaLint = { id = "io.github.youndie.sborka.lint", version.ref = "sborka" }
