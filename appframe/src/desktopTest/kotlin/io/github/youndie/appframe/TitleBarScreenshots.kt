@@ -15,10 +15,10 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.window.WindowPlacement
 import androidx.compose.ui.window.WindowState
-import ru.workinprogress.viddik.LocalViddikDarkTheme
-import ru.workinprogress.viddik.annotations.ViddikPreviewLabel
-import ru.workinprogress.viddik.annotations.ViddikScreenshot
-import ru.workinprogress.viddik.core.viddikTypography
+import io.github.youndie.viddik.LocalViddikDarkTheme
+import io.github.youndie.viddik.annotations.ViddikPreviewLabel
+import io.github.youndie.viddik.annotations.ViddikScreenshot
+import io.github.youndie.viddik.core.viddikTypography
 
 /**
  * Screenshot fixtures for the title bar.
