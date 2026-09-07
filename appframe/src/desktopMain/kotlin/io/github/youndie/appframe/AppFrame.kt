@@ -1,4 +1,4 @@
-package ru.workinprogress.appframe
+package io.github.youndie.appframe
 
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.layout.Column

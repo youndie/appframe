@@ -13,7 +13,7 @@ Add `--component "Linux GNOME"` to either one to work on a single layout instead
 
 Record mode does not validate anything — look at the PNGs before committing.
 
-Fixtures live in `../kotlin/ru/workinprogress/appframe/TitleBarScreenshots.kt`.
+Fixtures live in `../kotlin/io/github/youndie/appframe/TitleBarScreenshots.kt`.
 
 > These goldens used to be recorded by a CI workflow, because the title bar was drawn in whatever
 > font the host had installed and Skia rasterized a different typeface on each OS. Bundling the font
