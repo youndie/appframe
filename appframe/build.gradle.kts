@@ -78,7 +78,7 @@ kotlin {
             // @PreviewParameter, shared with Compose tooling.
             implementation(libs.compose.ui.tooling.preview)
             // The viddik artifacts, its KSP processor, the JUnit 5 runtime and the generated-source
-            // directory all come from the `ru.workinprogress.viddik` plugin.
+            // directory all come from the `io.github.youndie.viddik` plugin.
         }
     }
 }

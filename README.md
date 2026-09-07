@@ -183,7 +183,7 @@ parameterized fixture in `appframe/src/desktopTest/.../TitleBarScreenshots.kt` p
 platform layout (Windows, Windows maximized, macOS focused/unfocused, GNOME, left-side Linux, and
 Windows/macOS with menus), each in light and dark.
 
-The wiring comes from viddik's Gradle plugin (`id("ru.workinprogress.viddik")` in
+The wiring comes from viddik's Gradle plugin (`id("io.github.youndie.viddik")` in
 `appframe/build.gradle.kts`), and verification is part of `check` — `./gradlew build` runs it:
 
 ```shell
