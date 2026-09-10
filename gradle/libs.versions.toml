@@ -9,7 +9,7 @@ maven-publish = "0.37.0"
 ksp = "2.3.11"
 # One version ref covers both the Gradle plugin and the artifacts it adds: the plugin defaults them
 # to its own version, which is what keeps the KSP processor and the capture engine in step.
-viddik = "0.4.0"
+viddik = "0.5.0.29"
 
 [libraries]
 kotlinx-coroutines-swing = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }
