@@ -1,9 +1,9 @@
 plugins {
-    alias(libs.plugins.kotlinMultiplatform)
-    alias(libs.plugins.composeCompiler)
-    alias(libs.plugins.composeMultiplatform)
+    alias(wip.plugins.kotlinMultiplatform)
+    alias(wip.plugins.composeCompiler)
+    alias(wip.plugins.composeMultiplatform)
     alias(libs.plugins.mavenPublish)
-    alias(libs.plugins.ksp)
+    alias(wip.plugins.ksp)
     alias(libs.plugins.viddik)
     id("io.github.youndie.sborka.kmp")
     id("io.github.youndie.sborka.lint")
@@ -71,7 +71,7 @@ kotlin {
             api(compose.desktop.common)
         }
         desktopTest.dependencies {
-            implementation(libs.kotlin.test)
+            implementation(wip.kotlin.test)
             // `desktopMain` deliberately depends on `common`; rendering a real window in tests needs
             // the host's skiko native library, which only `currentOs` brings in.
             implementation(compose.desktop.currentOs)
