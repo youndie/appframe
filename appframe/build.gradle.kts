@@ -76,7 +76,7 @@ kotlin {
             // the host's skiko native library, which only `currentOs` brings in.
             implementation(compose.desktop.currentOs)
             // @PreviewParameter, shared with Compose tooling.
-            implementation(libs.compose.ui.tooling.preview)
+            implementation(wip.compose.ui.tooling.preview)
             // The viddik artifacts, its KSP processor, the JUnit 5 runtime and the generated-source
             // directory all come from the `io.github.youndie.viddik` plugin.
         }
