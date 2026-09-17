@@ -1,27 +1,22 @@
 [versions]
 # The build conventions: the coordinate, the version, the toolchain, the jvm floor, the style and the
 # test platform. Bumping this changes how both modules are built.
-sborka = "0.4.0.43"
-compose-multiplatform = "1.12.0"
-kotlin = "2.4.10"
+sborka = "0.4.0.89"
+# The compiler comes with them. The `wip` catalog a sborka release publishes carries `kotlin`,
+# `ksp` and `composeMultiplatform`, and those three are one decision, not three: KSP is built
+# against a compiler, the Compose plugin is versioned by it, and a Compose Multiplatform release
+# is built against a plugin range. Holding any of them here would be that decision spelled twice.
 kotlinx-coroutines = "1.11.0"
 maven-publish = "0.37.0"
-ksp = "2.3.11"
 # One version ref covers both the Gradle plugin and the artifacts it adds: the plugin defaults them
 # to its own version, which is what keeps the KSP processor and the capture engine in step.
 viddik = "0.4.0"
 
 [libraries]
 kotlinx-coroutines-swing = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }
-kotlin-test = { group = "org.jetbrains.kotlin", name = "kotlin-test", version.ref = "kotlin" }
-compose-ui-tooling-preview = { group = "org.jetbrains.compose.ui", name = "ui-tooling-preview", version.ref = "compose-multiplatform" }
 
 [plugins]
-composeMultiplatform = { id = "org.jetbrains.compose", version.ref = "compose-multiplatform" }
-composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
-kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 mavenPublish = { id = "com.vanniktech.maven.publish", version.ref = "maven-publish" }
-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 viddik = { id = "io.github.youndie.viddik", version.ref = "viddik" }
 sborkaKmp = { id = "io.github.youndie.sborka.kmp", version.ref = "sborka" }
 sborkaLint = { id = "io.github.youndie.sborka.lint", version.ref = "sborka" }
