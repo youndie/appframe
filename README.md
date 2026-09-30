@@ -1,6 +1,6 @@
 # AppFrame
 
-[![kotlin](https://img.shields.io/badge/Kotlin-2.4.10-blue?logo=kotlin&logoColor=white)](https://kotlinlang.org)
+[![kotlin](https://img.shields.io/badge/Kotlin-2.4.20-blue?logo=kotlin&logoColor=white)](https://kotlinlang.org)
 ![Static Badge](https://img.shields.io/badge/Desktop-blue)
 [![Maven Central](https://img.shields.io/maven-central/v/io.github.youndie/appframe?color=40c14a)](https://central.sonatype.com/artifact/io.github.youndie/appframe)
 [![license](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
@@ -37,13 +37,24 @@ standard window controls.
 
 ## Installation
 
-The library is on Maven Central:
+The library is on Maven Central, so no extra repository is needed:
 
 ```kotlin
 desktopMain.dependencies {
     implementation("io.github.youndie:appframe:0.2.0")
 }
 ```
+
+Gradle resolves `appframe` to its desktop variant through the module metadata, in a multiplatform
+module and in a plain `kotlin("jvm")` one alike. A build that reads only the POM — Maven, for
+one — takes the variant directly: `io.github.youndie:appframe-desktop:0.2.0`.
+
+Requirements: **Java 21** (the published metadata says so, and Gradle refuses the dependency on an
+older toolchain rather than failing at class loading) and **Compose Multiplatform 1.12**, which the
+library is compiled against.
+
+The `0.1.x` builds were published to `https://reposilite.kotlin.website/releases` as
+`appframe-desktop` only; that repository can be dropped when moving to `0.2.0`.
 
 ## Usage
 
