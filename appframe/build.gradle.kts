@@ -2,11 +2,14 @@ plugins {
     alias(wip.plugins.kotlinMultiplatform)
     alias(wip.plugins.composeCompiler)
     alias(wip.plugins.composeMultiplatform)
-    alias(libs.plugins.mavenPublish)
     alias(wip.plugins.ksp)
     alias(libs.plugins.viddik)
     id("io.github.youndie.sborka.kmp")
     id("io.github.youndie.sborka.lint")
+    // The pom, the sources jar and — because `sborka.central` is on — the javadoc jar and the
+    // signatures Maven Central refuses a bundle without. The coordinate is `sborka.group`, the module
+    // name and the `version` property; the release goes out through sborka's `central.yaml`.
+    id("io.github.youndie.sborka.publish")
 }
 
 publishing {
@@ -19,36 +22,6 @@ publishing {
             authentication {
                 create<BasicAuthentication>("basic")
             }
-        }
-    }
-}
-
-mavenPublishing {
-    // The group and the version come from the build rather than from this call: `sborka.group` and
-    // the `version` property, which CI passes as `-PVERSION`. They used to be written here alone,
-    // and `-PBUILD_NUMBER` reached the publication's coordinate while the archive tasks went on
-    // naming files after the project's version — a jar arriving under a number no release ever had.
-    coordinates(
-        groupId = project.group.toString(),
-        artifactId = "appframe",
-        version = project.version.toString(),
-    )
-
-    pom {
-        name.set("AppFrame")
-        description.set("Platform-aware window frame for Compose Multiplatform desktop applications")
-        url.set("https://github.com/youndie/appframe")
-
-        developers {
-            developer {
-                id.set("youndie")
-                name.set("Pavel Votyakov")
-                email.set("panic.xyb@gmail.com")
-            }
-        }
-
-        scm {
-            url.set("https://github.com/youndie/appframe")
         }
     }
 }

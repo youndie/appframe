@@ -2,7 +2,7 @@
 
 [![kotlin](https://img.shields.io/badge/Kotlin-2.4.10-blue?logo=kotlin&logoColor=white)](https://kotlinlang.org)
 ![Static Badge](https://img.shields.io/badge/Desktop-blue)
-[![Maven Central](https://reposilite.kotlin.website/api/badge/latest/releases/io/github/youndie/appframe-desktop?name=snapshots&color=40c14a&prefix=v)](https://reposilite.kotlin.website/#/releases/io/github/youndie/appframe-desktop)
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.youndie/appframe?color=40c14a)](https://central.sonatype.com/artifact/io.github.youndie/appframe)
 [![license](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
 A customizable window frame library for [Compose Multiplatform](https://www.jetbrains.com/compose-multiplatform/)
@@ -37,17 +37,11 @@ standard window controls.
 
 ## Installation
 
-Add the repository to your `settings.gradle.kts`
-
-```kotlin
-maven("https://reposilite.kotlin.website/releases")
-```
-
-And the dependency:
+The library is on Maven Central:
 
 ```kotlin
 desktopMain.dependencies {
-    implementation("io.github.youndie:appframe-desktop:0.1.{version}")
+    implementation("io.github.youndie:appframe:0.2.0")
 }
 ```
 
