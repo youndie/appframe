@@ -16,8 +16,8 @@ jobs:
     steps:
       - name: Checkout sources
         uses: actions/checkout@v7
-      # Java and Gradle in one step and at one version for the portfolio. What the modules compile
-      # to is `sborka.jvmToolchain=21`, fetched by the toolchain resolver.
+      # Java and Gradle in one step and at one version for the portfolio. The action installs 21 and
+      # 25: the modules compile ON sborka's default toolchain (25) and TO `sborka.jvmFloor=21`.
       - name: Setup Java and Gradle
         uses: youndie/sborka/.github/actions/setup-kotlin@main
       # Screenshot verification is part of `check`: the fixtures draw in viddik's bundled font, so
