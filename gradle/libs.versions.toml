@@ -1,7 +1,7 @@
 [versions]
 # The build conventions: the coordinate, the version, the toolchain, the jvm floor, the style and the
 # test platform. Bumping this changes how both modules are built.
-sborka = "0.4.0.89"
+sborka = "0.4.0.111"
 # The compiler comes with them. The `wip` catalog a sborka release publishes carries `kotlin`,
 # `ksp` and `composeMultiplatform`, and those three are one decision, not three: KSP is built
 # against a compiler, the Compose plugin is versioned by it, and a Compose Multiplatform release
