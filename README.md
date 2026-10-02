@@ -56,6 +56,12 @@ library is compiled against.
 The `0.1.x` builds were published to `https://reposilite.kotlin.website/releases` as
 `appframe-desktop` only; that repository can be dropped when moving to `0.2.0`.
 
+Every push to `main` still goes there, as `<next release>.<run>` — `0.2.1.<run>` is a build on the
+way to `0.2.1`, not a release. In Maven's ordering it sorts above `0.2.1` itself, so a build that
+takes one is not offered the release as an upgrade: moving to Maven Central is a hand edit.
+`0.2.0.28`–`0.2.0.30` are builds of `0.2.0` and the two commits after it, published before the
+head moved; nothing needs them.
+
 ## Usage
 
 ```kotlin

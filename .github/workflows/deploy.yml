@@ -18,5 +18,9 @@ jobs:
         uses: youndie/sborka/.github/actions/setup-kotlin@main
       - name: Test
         run: ./gradlew :appframe:desktopTest --no-daemon
+      # The head of the version comes from `gradle.properties` and nowhere else: this file used to
+      # spell it again (`0.2.0.<run>`), and a head written twice is a head that moves in one place.
+      - id: ver
+        uses: youndie/sborka/.github/actions/determine-version@main
       - name: Publish
-        run: ./gradlew appframe:publishDesktopPublicationToKotlinWebsiteRepository -PVERSION=0.2.0.${{github.run_number}} -PkotlinWebsiteUsername=${{secrets.REPOSILITE_USER}} -PkotlinWebsitePassword=${{secrets.REPOSILITE_PASSWORD}} --no-daemon
+        run: ./gradlew appframe:publishDesktopPublicationToKotlinWebsiteRepository -PVERSION=${{ steps.ver.outputs.version }} -PkotlinWebsiteUsername=${{secrets.REPOSILITE_USER}} -PkotlinWebsitePassword=${{secrets.REPOSILITE_PASSWORD}} --no-daemon
