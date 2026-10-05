@@ -15,12 +15,12 @@ jobs:
       # Java and Gradle in one step and at one version for the portfolio. The action installs 21 and
       # 25: the modules compile ON sborka's default toolchain (25) and TO `sborka.jvmFloor=21`.
       - name: Setup Java and Gradle
-        uses: youndie/sborka/.github/actions/setup-kotlin@main
+        uses: youndie/sborka/.github/actions/setup-kotlin@v0.5.0.130
       - name: Test
         run: ./gradlew :appframe:desktopTest --no-daemon
       # The head of the version comes from `gradle.properties` and nowhere else: this file used to
       # spell it again (`0.2.0.<run>`), and a head written twice is a head that moves in one place.
       - id: ver
-        uses: youndie/sborka/.github/actions/determine-version@main
+        uses: youndie/sborka/.github/actions/determine-version@v0.5.0.130
       - name: Publish
         run: ./gradlew appframe:publishDesktopPublicationToKotlinWebsiteRepository -PVERSION=${{ steps.ver.outputs.version }} -PkotlinWebsiteUsername=${{secrets.REPOSILITE_USER}} -PkotlinWebsitePassword=${{secrets.REPOSILITE_PASSWORD}} --no-daemon

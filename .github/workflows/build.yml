@@ -19,7 +19,7 @@ jobs:
       # Java and Gradle in one step and at one version for the portfolio. The action installs 21 and
       # 25: the modules compile ON sborka's default toolchain (25) and TO `sborka.jvmFloor=21`.
       - name: Setup Java and Gradle
-        uses: youndie/sborka/.github/actions/setup-kotlin@main
+        uses: youndie/sborka/.github/actions/setup-kotlin@v0.5.0.130
       # Screenshot verification is part of `check`: the fixtures draw in viddik's bundled font, so
       # the goldens are the same on every runner and there is nothing host-specific left to skip.
       - name: Build and test
