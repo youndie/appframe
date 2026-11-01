@@ -181,7 +181,8 @@ private fun TitleText(
  * A double click anywhere on the bar toggles the window, matching every desktop platform.
  *
  * Written by hand rather than with `combinedClickable` because the bar sits inside a
- * [androidx.compose.foundation.window.WindowDraggableArea], which already claims drag gestures.
+ * drag area — [androidx.compose.foundation.window.WindowDraggableArea], or [AppFrame]'s own on
+ * Windows — which already claims drag gestures.
  *
  * The toggle waits for the second click to be released. Every press on the bar starts the drag
  * area's move, which follows the mouse until the button is let go — and Windows answers a window
