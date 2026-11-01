@@ -156,6 +156,12 @@ private fun FrameWindowScope.AppFrameContent(
         onDispose(window::releaseScreen)
     }
 
+    // Windows maximizes a window without a caption over the taskbar; see `WorkArea.kt`.
+    DisposableEffect(window) {
+        val release = window.keepMaximizedBoundsOnWorkArea()
+        onDispose(release)
+    }
+
     if (menuBar != null) {
         MenuShortcuts(shortcuts, menuBar)
     }

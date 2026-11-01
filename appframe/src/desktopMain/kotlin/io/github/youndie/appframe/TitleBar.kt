@@ -182,6 +182,13 @@ private fun TitleText(
  *
  * Written by hand rather than with `combinedClickable` because the bar sits inside a
  * [androidx.compose.foundation.window.WindowDraggableArea], which already claims drag gestures.
+ *
+ * The toggle waits for the second click to be released. Every press on the bar starts the drag
+ * area's move, which follows the mouse until the button is let go — and Windows answers a window
+ * resized under a held button with a mouse move of its own. Toggled on the press, that move landed
+ * in the drag area, which put the window back where the press began: a window the size of the
+ * screen, at its old position, no longer maximized, and with nothing left for the next double
+ * click to restore.
  */
 private fun Modifier.doubleClickToToggleMaximized(
     state: WindowState,
@@ -194,6 +201,7 @@ private fun Modifier.doubleClickToToggleMaximized(
             awaitFirstDown()
             val firstUp = waitForUpOrCancellation() ?: return@awaitEachGesture
             awaitSecondDown(firstUp) ?: return@awaitEachGesture
+            waitForUpOrCancellation() ?: return@awaitEachGesture
             state.toggleZoom(action, window, fullscreen)
         }
     }
