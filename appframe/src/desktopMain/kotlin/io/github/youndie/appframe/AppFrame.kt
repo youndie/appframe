@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.window.WindowDraggableArea
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
@@ -171,7 +170,7 @@ private fun FrameWindowScope.AppFrameContent(
             LocalAppFrameWindow provides window,
             LocalFullscreenFallback provides fullscreen,
         ) {
-            WindowDraggableArea {
+            TitleBarDragArea {
                 TitleBar(
                     state = state,
                     onCloseRequest = onCloseRequest,
