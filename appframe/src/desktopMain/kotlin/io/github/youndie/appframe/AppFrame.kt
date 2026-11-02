@@ -11,14 +11,17 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.input.key.KeyEvent
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.FrameWindowScope
 import androidx.compose.ui.window.Window
+import androidx.compose.ui.window.WindowDecoration
 import androidx.compose.ui.window.WindowPlacement
 import androidx.compose.ui.window.WindowState
 import androidx.compose.ui.window.rememberWindowState
@@ -73,7 +76,15 @@ private class AppFrameScopeImpl(
  * and a window's transparency is fixed the moment it is shown. Only the style present on the first
  * composition decides whether corners can be rounded at all — a style swapped in later animates its
  * [TitleBarStyle.cornerRadius] within that decision, and is ignored if the window started opaque.
+ *
+ * A [resizable] window has no system border to grab, so Compose lays a strip [resizeBorder] thick
+ * over every edge of the content, and a press on it resizes the window. Whatever the content puts
+ * flush with an edge loses its presses to that strip: a stock 8 dp `VerticalScrollbar` against the
+ * right edge is covered entirely, and its thumb shows a resize cursor and cannot be dragged. Keep
+ * such content [resizeBorder] in from the edges, or pass a thinner border — `0.dp` removes the
+ * strip, and the window can then no longer be resized by its edges.
  */
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 public fun AppFrame(
     onCloseRequest: () -> Unit,
@@ -82,6 +93,7 @@ public fun AppFrame(
     title: String = "AppName",
     icon: Painter? = null,
     resizable: Boolean = true,
+    resizeBorder: Dp = 8.dp,
     alwaysOnTop: Boolean = false,
     style: TitleBarStyle = TitleBarStyle.forHost(),
     onPreviewKeyEvent: (KeyEvent) -> Boolean = { false },
@@ -103,7 +115,7 @@ public fun AppFrame(
         visible = visible,
         title = title,
         icon = icon,
-        undecorated = true,
+        decoration = WindowDecoration.Undecorated(resizerThickness = resizeBorder),
         transparent = transparent,
         resizable = resizable,
         alwaysOnTop = alwaysOnTop,
