@@ -41,23 +41,23 @@ The library is on Maven Central, so no extra repository is needed:
 
 ```kotlin
 desktopMain.dependencies {
-    implementation("io.github.youndie:appframe:0.2.0")
+    implementation("io.github.youndie:appframe:0.3.0")
 }
 ```
 
 Gradle resolves `appframe` to its desktop variant through the module metadata, in a multiplatform
 module and in a plain `kotlin("jvm")` one alike. A build that reads only the POM — Maven, for
-one — takes the variant directly: `io.github.youndie:appframe-desktop:0.2.0`.
+one — takes the variant directly: `io.github.youndie:appframe-desktop:0.3.0`.
 
 Requirements: **Java 21** (the published metadata says so, and Gradle refuses the dependency on an
 older toolchain rather than failing at class loading) and **Compose Multiplatform 1.12**, which the
 library is compiled against.
 
 The `0.1.x` builds were published to `https://reposilite.kotlin.website/releases` as
-`appframe-desktop` only; that repository can be dropped when moving to `0.2.0`.
+`appframe-desktop` only; that repository can be dropped when moving to Maven Central.
 
-Every push to `main` still goes there, as `<next release>.<run>` — `0.2.1.<run>` is a build on the
-way to `0.2.1`, not a release. In Maven's ordering it sorts above `0.2.1` itself, so a build that
+Every push to `main` still goes there, as `<next release>.<run>` — `0.3.1.<run>` is a build on the
+way to `0.3.1`, not a release. In Maven's ordering it sorts above `0.3.1` itself, so a build that
 takes one is not offered the release as an upgrade: moving to Maven Central is a hand edit.
 `0.2.0.28`–`0.2.0.30` are builds of `0.2.0` and the two commits after it, published before the
 head moved; nothing needs them.
