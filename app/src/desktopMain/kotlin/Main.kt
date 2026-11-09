@@ -10,9 +10,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.application
 
 private val Platforms = listOf("This platform", "Windows", "macOS", "Linux")
+
+private val ResizeBorders = listOf(8.dp, 4.dp, 0.dp)
 
 private fun styleOf(platform: String): TitleBarStyle =
     when (platform) {
@@ -30,6 +33,8 @@ fun main() =
             var platform by remember { mutableStateOf(Platforms.first()) }
             var fullscreen by remember { mutableStateOf(false) }
             var lastCommand by remember { mutableStateOf("—") }
+            var resizeBorder by remember { mutableStateOf(ResizeBorders.first()) }
+            var edgeScrollbar by remember { mutableStateOf(false) }
 
             val style =
                 styleOf(platform).copy(
@@ -40,6 +45,7 @@ fun main() =
                 onCloseRequest = ::exitApplication,
                 title = "AppFrame",
                 style = style,
+                resizeBorder = resizeBorder,
                 menuBar = {
                     Menu("File") {
                         Item("New", shortcut = MenuShortcut.primary(Key.N)) { lastCommand = "File ▸ New" }
@@ -60,6 +66,20 @@ fun main() =
                             shortcut = MenuShortcut.primary(Key.F, shift = true),
                             onCheckedChange = { fullscreen = it },
                         )
+                        CheckboxItem(
+                            text = "Edge scrollbar",
+                            checked = edgeScrollbar,
+                            onCheckedChange = { edgeScrollbar = it },
+                        )
+                        Menu("Resize border") {
+                            ResizeBorders.forEach { candidate ->
+                                RadioButtonItem(
+                                    text = "${candidate.value.toInt()} dp",
+                                    selected = candidate == resizeBorder,
+                                    onClick = { resizeBorder = candidate },
+                                )
+                            }
+                        }
                         Separator()
                         Platforms.forEach { candidate ->
                             RadioButtonItem(
@@ -71,13 +91,17 @@ fun main() =
                     }
                 },
             ) {
-                App(
-                    platforms = Platforms,
-                    selected = platform,
-                    onSelect = { platform = it },
-                    lastCommand = lastCommand,
-                    modifier = Modifier.weight(1f),
-                )
+                if (edgeScrollbar) {
+                    EdgeScrollbarPane(resizeBorder = resizeBorder, modifier = Modifier.weight(1f))
+                } else {
+                    App(
+                        platforms = Platforms,
+                        selected = platform,
+                        onSelect = { platform = it },
+                        lastCommand = lastCommand,
+                        modifier = Modifier.weight(1f),
+                    )
+                }
             }
         }
     }

@@ -78,6 +78,24 @@ fun main() = application {
 }
 ```
 
+### The resize strip at the edges
+
+An `AppFrame` window is undecorated, so it has no system border to grab. To keep it resizable,
+Compose lays a strip **8 dp** thick over every edge of the content, and a press on it resizes the
+window. Whatever the content puts flush with an edge sits under that strip: a stock
+`VerticalScrollbar` against the right edge — also 8 dp — is covered entirely, shows a resize
+cursor, and its thumb cannot be dragged.
+
+Keep such content 8 dp in from the edges, or set the strip's thickness with `resizeBorder`:
+
+```kotlin
+AppFrame(onCloseRequest = ::exitApplication, resizeBorder = 4.dp) { /* content */ }
+```
+
+`0.dp` removes the strip, and the window can then no longer be resized by its edges. The default
+stays 8 dp so that nothing changes for an existing window. The sample's **View ▸ Edge scrollbar**
+and **View ▸ Resize border** show the case.
+
 ### Choosing a layout explicitly
 
 `AppFrame` uses `TitleBarStyle.forHost()` by default. Any of the built-in styles — or a `copy()` of
