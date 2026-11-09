@@ -214,6 +214,11 @@ CI verifies on all three runners rather than on the one that recorded them.
 > its own font should keep using it and run the bytes through `normalizeVerticalMetrics()` instead —
 > substituting Roboto into a golden of a UI that doesn't use Roboto is worse than useless.
 
+## Development
+
+What was checked on which desktop, the open questions and the backlog: [`docs/`](docs/README.md),
+[`backlog.md`](backlog.md).
+
 ## Running the sample
 
 ```shell
