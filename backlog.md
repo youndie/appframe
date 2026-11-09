@@ -45,7 +45,7 @@ A stage is a field on the item, not a directory.
 
 | Task | | Priority | Size | Blocked by |
 |---|---|---|---|---|
-| [B-01](docs/backlog/B-01-changelog-and-upgrade-notes.md) `[ ]` | Keep a CHANGELOG, and say in it how to move from 0.2.0 to 0.3.0 — a source and a binary break | P1 | S | - |
+| [B-01](docs/backlog/B-01-changelog-and-upgrade-notes.md) `[~]` | Keep a CHANGELOG, and say in it how to move from 0.2.0 to 0.3.0 — a source and a binary break | P1 | S | - |
 | [B-02](docs/backlog/B-02-windows-snap.md) `[ ]` | Windows 11: find out whether Snap Layouts and Aero Snap work on an AppFrame window, and act on the answer | P1 | M | - |
 | [B-03](docs/backlog/B-03-linux-wayland-gnome.md) `[ ]` | Linux, GNOME on Wayland: check that an AppFrame window moves and resizes, on the JetBrains Runtime and on Temurin | P2 | M | - |
 | [B-04](docs/backlog/B-04-document-the-resize-border.md) `[ ]` | Tell README readers about the resize strip and resizeBorder, and check by hand that a thinner border frees an edge scrollbar | P2 | S | - |

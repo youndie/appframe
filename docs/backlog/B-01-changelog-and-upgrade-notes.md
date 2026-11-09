@@ -1,7 +1,7 @@
 ---
 id: B-01
 title: "Keep a CHANGELOG, and say in it how to move from 0.2.0 to 0.3.0 — a source and a binary break"
-status: open
+status: wip
 priority: P1
 size: S
 stage: stage-first-contact
