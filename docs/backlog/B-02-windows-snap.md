@@ -1,7 +1,8 @@
 ---
 id: B-02
 title: "Windows 11: find out whether Snap Layouts and Aero Snap work on an AppFrame window, and act on the answer"
-status: question
+status: open
+blocked_by: [B-07]
 priority: P1
 size: M
 stage: stage-native-behaviour
@@ -52,19 +53,8 @@ reading the hypothesis rests on still holds. Nothing beyond that was checked: th
 is a person at a Windows 11 desktop, and the agent loop working this backlog has no interactive
 Windows session. It did not try the gestures and does not record a result for any of them.
 
-## Question
+## Answered
 
-**Who runs the Windows 11 check, and when?** The gestures (hover the maximize button; drag the bar
-to the left, right and top edges; Win+Left/Right/Up) need someone at the desktop with `./gradlew
-:app:run`; the result per gesture, with the Windows build and display scaling, goes into Findings
-above. [B-05](B-05-multi-monitor-on-windows.md) (two monitors) and the Windows half of
-[B-04](B-04-document-the-resize-border.md) can share that sitting.
-
-The choices, for the owner:
-
-1. **The owner runs it** and writes the results here (or in a comment the loop copies in); the item
-   goes back to `open` and the loop takes the decision half — make it work, or a written refusal.
-2. **Skip the observation** and decide from the code reading: start on the `WM_NCHITTEST` route as
-   if the answer were "no", knowing that a merged change still needs the same hand check before the
-   item can close.
-3. **Drop it** for now, with the reason written here.
+2026-11-09, the owner: the Windows test is an item of its own, to be checked separately —
+[B-07](B-07-windows-hand-check.md). This item is `blocked_by` it and takes the decision half once
+B-07 has the results.

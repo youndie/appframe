@@ -24,3 +24,8 @@ has been said about it since: 0.3.0 (#60, #61, #63) exists only as a GitHub rele
 - AC: the owner's answer is recorded here — a post with its link, a submission, or "not now" with
   the condition for revisiting; the item closes on it.
 - Anchors: `README.md` (what a reader arriving from a post sees first).
+
+## Answers
+
+- 2026-11-09, the owner: **nothing is to be sent to jetc.dev.**
+- Still open: whether to write a post about 0.3.0, and when.
