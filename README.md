@@ -53,6 +53,10 @@ Requirements: **Java 21** (the published metadata says so, and Gradle refuses th
 older toolchain rather than failing at class loading) and **Compose Multiplatform 1.12**, which the
 library is compiled against.
 
+What changed in each release, and how to upgrade: [CHANGELOG.md](CHANGELOG.md). Moving from 0.2.0
+to 0.3.0 breaks positional `AppFrame` calls in source, and anything compiled against 0.2.0 in
+bytecode — read its **Upgrading** part before bumping a library built on appframe.
+
 The `0.1.x` builds were published to `https://reposilite.kotlin.website/releases` as
 `appframe-desktop` only; that repository can be dropped when moving to Maven Central.
 
@@ -218,6 +222,9 @@ CI verifies on all three runners rather than on the one that recorded them.
 
 What was checked on which desktop, the open questions and the backlog: [`docs/`](docs/README.md),
 [`backlog.md`](backlog.md).
+
+A pull request that changes what a caller sees adds its line under `Unreleased` in
+[CHANGELOG.md](CHANGELOG.md); the rule is at the top of that file.
 
 ## Running the sample
 
