@@ -1,7 +1,7 @@
 ---
 id: B-03
 title: "Linux, GNOME on Wayland: check that an AppFrame window moves and resizes, on the JetBrains Runtime and on Temurin"
-status: open
+status: question
 priority: P2
 size: M
 stage: stage-native-behaviour
@@ -35,3 +35,34 @@ from `MouseInfo`; the resize strip is `setSize`/`setLocation` on every runtime
 - Anchors: `appframe/src/desktopMain/kotlin/io/github/youndie/appframe/TitleBarDrag.kt`,
   `appframe/src/desktopMain/kotlin/io/github/youndie/appframe/LinuxDecorations.kt`,
   `app/src/desktopMain/kotlin/Main.kt`.
+
+## Findings
+
+2026-11-09.
+
+- **The KDoc half is done** without a Wayland desktop, because it was wrong on Temurin whatever
+  Wayland does. `TitleBarDragArea`'s KDoc now says that on Linux the move goes to the window manager
+  only on the JetBrains Runtime, and that on any other JDK Compose moves the window by hand. Re-read
+  from `foundation-desktop-1.12.1.jar` with `javap -c -p`: the gesture calls
+  `WindowMoveHandler.startMovingTogetherWithMouse` right after `awaitFirstDown` (no slop), and
+  `StandardMoveHandler.onDrag` is `Window.setLocation(start + pointer delta)` with no look at the
+  placement — so on a non-JBR runtime a maximized window is dragged as it is, the same defect
+  `youndie/appframe#61` fixed on Windows. That is read from bytecode, not seen on a desktop.
+- **Not checked: the table.** No gesture was tried on GNOME, on Wayland or anywhere on Linux: the
+  agent loop working this backlog has no GNOME desktop session to drive. No result
+  is recorded for any runtime × gesture cell.
+
+## Question
+
+**Who runs the GNOME-on-Wayland check, and when?** It needs a GNOME Wayland session with a JetBrains
+Runtime 21+ and a Temurin 21+, and `./gradlew :app:run` on each (the default AWT toolkit, so
+XWayland); the gestures and what to record are in the item above.
+
+The choices, for the owner:
+
+1. **The owner runs it** (or names a machine with a GNOME Wayland session the loop may drive) and
+   writes the table here; the item goes back to `open` and the loop takes the fixes and reproducers.
+2. **Act on the bytecode alone** for the one defect it shows: route Linux on a non-JBR runtime
+   through appframe's own drag (`dragWindow`, which restores a maximized window), as Windows already
+   is — knowing it still needs the hand check before the item can close.
+3. **Drop the Wayland half** for now, with the reason written here; the KDoc fix stands.

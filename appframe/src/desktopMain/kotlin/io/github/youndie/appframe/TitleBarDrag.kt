@@ -26,8 +26,14 @@ import kotlin.math.roundToInt
  * glyph still on the bar and a double click that restores rather than maximizes. A Windows title
  * bar does neither: it waits for the pointer to travel past a threshold, and a maximized window is
  * restored as the drag begins and carried under the pointer at the same relative position. This
- * does the same. macOS moves a zoomed window as it is, and on Linux Compose hands the move to the
- * window manager, which knows the rule itself.
+ * does the same. macOS moves a zoomed window as it is.
+ *
+ * On Linux what [WindowDraggableArea] does depends on the runtime, not on the desktop. On the
+ * JetBrains Runtime it hands the move to the window manager (`JBR.isWindowMoveSupported()`, then
+ * `WindowMove.startMovingTogetherWithMouse`), which knows the rule itself. On any other JDK —
+ * Temurin included — it moves the window by hand from the first press: `Window.setLocation` from
+ * `MouseInfo` on every mouse drag the window receives, with no threshold and no restore of a
+ * maximized window. Neither path has been tried on a Wayland session.
  */
 @Composable
 internal fun FrameWindowScope.TitleBarDragArea(content: @Composable () -> Unit) {

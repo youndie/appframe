@@ -46,7 +46,7 @@ A stage is a field on the item, not a directory.
 | Task | | Priority | Size | Blocked by |
 |---|---|---|---|---|
 | [B-02](docs/backlog/B-02-windows-snap.md) `[?]` | Windows 11: find out whether Snap Layouts and Aero Snap work on an AppFrame window, and act on the answer | P1 | M | - |
-| [B-03](docs/backlog/B-03-linux-wayland-gnome.md) `[ ]` | Linux, GNOME on Wayland: check that an AppFrame window moves and resizes, on the JetBrains Runtime and on Temurin | P2 | M | - |
+| [B-03](docs/backlog/B-03-linux-wayland-gnome.md) `[?]` | Linux, GNOME on Wayland: check that an AppFrame window moves and resizes, on the JetBrains Runtime and on Temurin | P2 | M | - |
 | [B-04](docs/backlog/B-04-document-the-resize-border.md) `[ ]` | Tell README readers about the resize strip and resizeBorder, and check by hand that a thinner border frees an edge scrollbar | P2 | S | - |
 | [B-05](docs/backlog/B-05-multi-monitor-on-windows.md) `[ ]` | Windows with two monitors: check the README's multi-monitor claim, or narrow it | P2 | S | - |
 | [B-06](docs/backlog/B-06-announce-0-3-0.md) `[?]` | Owner: announce 0.3.0 — a post, and whether to send it to jetc.dev again | P3 | XS | - |
