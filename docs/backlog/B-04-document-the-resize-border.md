@@ -51,15 +51,16 @@ release text. Two gaps remain:
 
 ## Question
 
-**Who drags the thumb, and when?** About a minute per platform with the demo: View ▸ Edge
-scrollbar, then for each of 8, 4 and 0 dp under View ▸ Resize border — does the thumb drag, and at
-4 dp does the window still resize from the right edge (the outer 4 dp)? Record the platform, its
-version and the display scaling in Findings above.
+The Windows half of the hand check is now [B-07](B-07-windows-hand-check.md) (the owner, 2026-11-09:
+the Windows test is checked separately). What is left here is macOS.
+
+**Who drags the thumb on macOS, and when?** About a minute with the demo: View ▸ Edge scrollbar,
+then for each of 8, 4 and 0 dp under View ▸ Resize border — does the thumb drag, and at 4 dp does
+the window still resize from the right edge (the outer 4 dp)? Record the macOS version and the
+display scaling in Findings above.
 
 The choices, for the owner:
 
-1. **The owner runs it** on macOS and on Windows (the Windows half fits the B-02 / B-05 sitting),
-   and the item closes on the results.
-2. **The owner lets the loop drive the demo window on the Mac** — the macOS half then gets done by
-   the loop; Windows still needs a person.
-3. **Close on the README alone**, recording the hand check as not done.
+1. **The owner runs it** on macOS; the item closes on that and B-07's Windows rows.
+2. **The owner lets the loop drive the demo window on the Mac** (it asked once and was refused).
+3. **Close on the README alone**, recording the macOS check as not done.

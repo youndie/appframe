@@ -1,7 +1,8 @@
 ---
 id: B-05
 title: "Windows with two monitors: check the README's multi-monitor claim, or narrow it"
-status: question
+status: open
+blocked_by: [B-07]
 priority: P2
 size: S
 stage: stage-native-behaviour
@@ -41,16 +42,8 @@ window is on, on `componentMoved` and `componentShown`
 checked: every move in the item needs Windows 11 with two monitors and a person at them, and the
 agent loop working this backlog has neither. No result is recorded for any move.
 
-## Question
+## Answered
 
-**Who runs the two-monitor check, and when?** It fits the same sitting as
-[B-02](B-02-windows-snap.md) and the Windows half of [B-04](B-04-document-the-resize-border.md); the
-moves and what to record are in the item above.
-
-The choices, for the owner:
-
-1. **The owner runs it** and writes the bounds here; the item goes back to `open` and the loop fixes
-   what is wrong or narrows the README.
-2. **Narrow the README now** to what was checked — maximize keeps to the work area of the monitor
-   the window is on, seen on one monitor (#60) — and leave the multi-monitor half as a hypothesis.
-3. **Leave the README as it is** and drop the item, with the reason written here.
+2026-11-09, the owner: the Windows test is an item of its own, to be checked separately —
+[B-07](B-07-windows-hand-check.md). This item is `blocked_by` it and takes the decision half once
+B-07 has the results.
