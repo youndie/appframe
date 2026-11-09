@@ -1,7 +1,7 @@
 ---
 id: B-01
 title: "Keep a CHANGELOG, and say in it how to move from 0.2.0 to 0.3.0 — a source and a binary break"
-status: wip
+status: done
 priority: P1
 size: S
 stage: stage-first-contact
@@ -38,3 +38,25 @@ GitHub release text. 0.3.0 broke `AppFrame` twice, and the repository records ne
   0.2.0 for code compiled against it; the contributor rule is written down; the README links the file.
 - Anchors: `appframe/src/desktopMain/kotlin/io/github/youndie/appframe/AppFrame.kt`, `README.md`,
   `gradle.properties` (the version head).
+
+## Findings
+
+2026-11-09, closed by the pull request that adds `CHANGELOG.md`.
+
+- **Binary, re-checked.** `javap -public` over every class of `appframe-desktop-0.2.0.jar` and
+  `appframe-desktop-0.3.0.jar` from Maven Central, diffed: the only public method that disappeared is
+  `AppFrameKt.AppFrame(...)`, replaced by `AppFrameKt.AppFrame-AlbwjTQ(...)` (a `float` for the `Dp`
+  after the second `boolean`). The classes 0.3.0 adds (`Grab`, `TitleBarDragKt`, `WorkAreaKt`) are
+  Kotlin `internal`, public only in bytecode. A first dump with all classes in one `javap` call came
+  out empty and "diffed clean" — the per-class run is the one that counts.
+- **Source, compiled.** A scratch file in `:app` (not committed) with the 0.2.0 positional call
+  `AppFrame(::exitApplication, rememberWindowState(), true, "My App", null, true, true) { }` failed
+  `:app:compileKotlinDesktop` on the Linux box with `Argument type mismatch: actual type is
+  'Boolean', but 'Dp' was expected`; with `alwaysOnTop = true` named it compiled. That the same call
+  compiles against 0.2.0 is read from the 0.2.0 signature (two `boolean`s after the `Painter`), not
+  compiled.
+- **Not checked**: a run of a 0.2.0-compiled caller against 0.3.0 showing the `NoSuchMethodError`
+  itself; it follows from the missing method.
+- **The 0.0.x / 0.1.x table** is from the reposilite `maven-metadata.xml` of both groups and the
+  deploy runs of #40 (run 20, the first `io.github.youndie` build) and #46 (run 23, the first with
+  the new packages). #30's menus are in builds from 0.0.17 (its deploy run).

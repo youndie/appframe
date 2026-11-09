@@ -88,7 +88,8 @@ Windows 11's Snap Layouts flyout and Aero Snap are system behaviours of exactly 
 
 **Consequence 5.** 0.3.0 is binary-incompatible as well: a library compiled against 0.2.0 that calls
 `AppFrame` fails with `NoSuchMethodError` when an application puts 0.3.0 on its classpath, even if
-every argument is named. No repository document says so — [B-01](../backlog/B-01-changelog-and-upgrade-notes.md).
+every argument is named. Recorded, with the positional call that stops compiling, in the 0.3.0 entry
+of [`CHANGELOG.md`](../../CHANGELOG.md) — [B-01](../backlog/B-01-changelog-and-upgrade-notes.md).
 
 ---
 
