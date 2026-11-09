@@ -70,7 +70,9 @@ a hand check with a pull request behind it, or a hypothesis.
 
 **Consequence 3.** The KDoc's "on Linux Compose hands the move to the window manager"
 (`TitleBarDrag.kt:29-30`) is true on the JetBrains Runtime and false on Temurin or any other JDK,
-which the README's "Java 21" requirement admits. Whether the hand-rolled move and resize work on a
+which the README's "Java 21" requirement admits. The KDoc was corrected to say so in
+B-03; Compose's hand-rolled move also starts on the first press and never restores a maximized
+window (`StandardMoveHandler.onDrag`, read with `javap -c`). Whether the hand-rolled move and resize work on a
 Wayland session is therefore two questions, one per runtime — [B-03](../backlog/B-03-linux-wayland-gnome.md).
 
 **Consequence 4.** On Windows neither the move nor the maximize button goes through the system, and
