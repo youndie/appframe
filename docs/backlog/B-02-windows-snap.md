@@ -1,7 +1,7 @@
 ---
 id: B-02
 title: "Windows 11: find out whether Snap Layouts and Aero Snap work on an AppFrame window, and act on the answer"
-status: open
+status: question
 priority: P1
 size: M
 stage: stage-native-behaviour
@@ -43,3 +43,28 @@ Research [§1.3, Consequence 4, H1](../research/research-architecture.md).
 - Anchors: `appframe/src/desktopMain/kotlin/io/github/youndie/appframe/TitleBarDrag.kt`,
   `appframe/src/desktopMain/kotlin/io/github/youndie/appframe/WindowControls.kt`,
   `appframe/src/desktopMain/kotlin/io/github/youndie/appframe/AppFrame.kt`.
+
+## Findings
+
+2026-11-09, at `4a0fc01`: no `WM_NCHITTEST`, `HTMAXBUTTON`, `HTCAPTION`, window-procedure hook or
+JNA dependency anywhere in `appframe/src`, `appframe/build.gradle.kts` or the version catalog — the
+reading the hypothesis rests on still holds. Nothing beyond that was checked: the item's first step
+is a person at a Windows 11 desktop, and the agent loop working this backlog has no interactive
+Windows session. It did not try the gestures and does not record a result for any of them.
+
+## Question
+
+**Who runs the Windows 11 check, and when?** The gestures (hover the maximize button; drag the bar
+to the left, right and top edges; Win+Left/Right/Up) need someone at the desktop with `./gradlew
+:app:run`; the result per gesture, with the Windows build and display scaling, goes into Findings
+above. [B-05](B-05-multi-monitor-on-windows.md) (two monitors) and the Windows half of
+[B-04](B-04-document-the-resize-border.md) can share that sitting.
+
+The choices, for the owner:
+
+1. **The owner runs it** and writes the results here (or in a comment the loop copies in); the item
+   goes back to `open` and the loop takes the decision half — make it work, or a written refusal.
+2. **Skip the observation** and decide from the code reading: start on the `WM_NCHITTEST` route as
+   if the answer were "no", knowing that a merged change still needs the same hand check before the
+   item can close.
+3. **Drop it** for now, with the reason written here.
