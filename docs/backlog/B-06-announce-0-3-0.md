@@ -1,7 +1,7 @@
 ---
 id: B-06
 title: "Owner: announce 0.3.0 — a post, and whether to send it to jetc.dev again"
-status: question
+status: done
 priority: P3
 size: XS
 stage: stage-outreach
@@ -28,4 +28,5 @@ has been said about it since: 0.3.0 (#60, #61, #63) exists only as a GitHub rele
 ## Answers
 
 - 2026-11-09, the owner: **nothing is to be sent to jetc.dev.**
-- Still open: whether to write a post about 0.3.0, and when.
+- 2026-11-09, the owner: **no post about 0.3.0 for now.** No condition for revisiting was named;
+  a post, if the owner asks for one later, is a new item.
