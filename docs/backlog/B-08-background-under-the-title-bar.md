@@ -1,7 +1,7 @@
 ---
 id: B-08
 title: "Let a caller draw behind the whole frame, title bar included, and keep the window's title out of the bar"
-status: wip
+status: done
 priority: P1
 size: M
 stage: stage-custom-frames
@@ -58,3 +58,41 @@ the design does not have.
   `appframe/src/desktopMain/kotlin/io/github/youndie/appframe/TitleBar.kt`,
   `appframe/src/desktopTest/kotlin/io/github/youndie/appframe/TitleBarScreenshots.kt`,
   `app/src/desktopMain/kotlin/Main.kt`, `README.md`, `CHANGELOG.md`.
+
+## Findings
+
+2026-11-14, closed by the pull request that adds the two parameters.
+
+- **Built as decided.** `AppFrame(showTitle, background)` sit after `actions`. The layout without its
+  window is `FrameLayout` and `FrameTitleBar`
+  (`appframe/src/desktopMain/kotlin/io/github/youndie/appframe/FrameLayout.kt`), which
+  `AppFrameContent` and the tests share. It is one `Box` whether there is a background or not, so
+  switching a background on keeps what the content remembers.
+- **Tests**, `FrameLayoutTest` (seven, `ImageComposeScene` at density 1): the background's colour in
+  the middle of the bar and below it, with the close button drawn over it; no title pixels with
+  `showTitle = false`, and some with `true` as the control; with no background, pixel for pixel what
+  0.3.0's `Column` of `TitleBar` and the content drew, for the Windows, macOS, Linux and GNOME layouts,
+  with menus and without; over a background a double click on the bar toggles the placement and the
+  close button closes, and neither press reaches the background, while a press below the bar does
+  (the probe's control); the content's `remember` survives the background being switched on.
+  `AppFrameSignatureTest` holds the 0.3.0 method by name and descriptor.
+- **Mutants**, each killed by at least one of those: the bar keeping its colour over a background;
+  the title drawn whatever `showTitle` says; the background drawn over the column; a `Box` only when
+  there is a background; the default bar colour drifting to `surface`; `actions` dropped on the way
+  to `TitleBar`; the hidden overload removed.
+- **Goldens**: six new ones, `AppFrame_Frame_*` (three layouts, light and dark), recorded on Linux
+  and looked at; the eighteen of the title bar verify unchanged.
+- **Bytecode**: `javap -s` over `appframe-desktop-0.3.0.jar` from Maven Central and over this
+  branch's jar. `AppFrame-AlbwjTQ` keeps 0.3.0's descriptor exactly — now `ACC_SYNTHETIC`, which is
+  how Kotlin compiles `DeprecationLevel.HIDDEN` — next to the new `AppFrame-osRQHRo`. No other public
+  method is gone.
+- **A real window, on Linux**: Xvfb with no window manager, Temurin 25, `java.awt.Robot`, a scratch
+  test that is not committed, run with a background and without. In both, a drag by the middle of
+  the bar moved the window with the pointer (80, 60 px for a travel of 80, 60; 72, 54 when a cold JVM
+  dropped the first step, in either setup), a drag on the right edge resized it from 600 to 700 px,
+  the close button closed it, and no press reached the background. With `showTitle = false` the AWT
+  window's title stayed. Robot's double clicks registered 6 times of 8 with a background and 4 of 8
+  without: misses in both setups, so that gesture rests on the scene test above.
+- **Not checked**: a real window on macOS or Windows, and Linux on the JetBrains Runtime, whose move
+  goes to a window manager that Xvfb does not have. The sample's View ▸ Background under the title
+  bar and View ▸ Title in the bar are there for that hand check.

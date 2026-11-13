@@ -47,22 +47,25 @@ A stage is a field on the item, not a directory.
 
 <!-- BEGIN INDEX -->
 
-## Open (6)
+## Open (5)
 
 | Task | | Priority | Size | Blocked by |
 |---|---|---|---|---|
 | [B-02](docs/backlog/B-02-windows-snap.md) `[ ]` | Windows 11: find out whether Snap Layouts and Aero Snap work on an AppFrame window, and act on the answer | P1 | M | B-07 |
 | [B-07](docs/backlog/B-07-windows-hand-check.md) `[?]` | Owner: one sitting at Windows 11 — snapping, two monitors and the edge scrollbar on an AppFrame window, checked by hand | P1 | S | - |
-| [B-08](docs/backlog/B-08-background-under-the-title-bar.md) `[~]` | Let a caller draw behind the whole frame, title bar included, and keep the window's title out of the bar | P1 | M | - |
 | [B-03](docs/backlog/B-03-linux-wayland-gnome.md) `[?]` | Linux, GNOME on Wayland: check that an AppFrame window moves and resizes, on the JetBrains Runtime and on Temurin | P2 | M | - |
 | [B-04](docs/backlog/B-04-document-the-resize-border.md) `[?]` | Tell README readers about the resize strip and resizeBorder, and check by hand that a thinner border frees an edge scrollbar | P2 | S | - |
 | [B-05](docs/backlog/B-05-multi-monitor-on-windows.md) `[ ]` | Windows with two monitors: check the README's multi-monitor claim, or narrow it | P2 | S | B-07 |
 
-## Closed (2)
+## Closed (3)
 
 **First contact**
 
 - [B-01](docs/backlog/B-01-changelog-and-upgrade-notes.md) `[x]` - Keep a CHANGELOG, and say in it how to move from 0.2.0 to 0.3.0 — a source and a binary break
+
+**Custom frames**
+
+- [B-08](docs/backlog/B-08-background-under-the-title-bar.md) `[x]` - Let a caller draw behind the whole frame, title bar included, and keep the window's title out of the bar
 
 **Outreach**
 
