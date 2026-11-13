@@ -1,18 +1,27 @@
 package io.github.youndie.appframe
 
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.platform.WindowInfo
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.WindowPlacement
 import androidx.compose.ui.window.WindowState
 import io.github.youndie.viddik.LocalViddikDarkTheme
@@ -24,7 +33,8 @@ import io.github.youndie.viddik.core.viddikTypography
  * Screenshot fixtures for the title bar.
  *
  * [AppFrame] itself can't be captured — it *is* a window — so these render [TitleBar] directly,
- * which is exactly the part whose layout differs per platform.
+ * which is exactly the part whose layout differs per platform, and the frame's layout without its
+ * window ([FramePreview]).
  */
 data class TitleBarFixture(
     val label: String,
@@ -87,6 +97,82 @@ fun TitleBarPreview(
                     menuBar = if (fixture.menus) DemoMenus else null,
                 )
             }
+        }
+    }
+}
+
+data class FrameFixture(
+    val label: String,
+    val style: TitleBarStyle,
+    val showTitle: Boolean = false,
+) : ViddikPreviewLabel {
+    override val previewLabel: String get() = label
+}
+
+/** A frame over a caller's background, the bar drawing none of its own: `AppFrame(background = …)`. */
+class FrameFixtures : PreviewParameterProvider<FrameFixture> {
+    override val values: Sequence<FrameFixture> =
+        sequenceOf(
+            FrameFixture("macOS over a background", TitleBarStyle.MacOs),
+            FrameFixture("Windows over a background", TitleBarStyle.Windows),
+            // The title, when it stays, is drawn over the background like the controls.
+            FrameFixture("Linux over a background, titled", TitleBarStyle.Linux, showTitle = true),
+        )
+}
+
+/**
+ * The frame's layout without its window — [FrameLayout] and [FrameTitleBar], what `AppFrame` puts in
+ * the window — so the background is seen running under the bar and around the content.
+ */
+@ViddikScreenshot(name = "Frame", group = "AppFrame", width = 720, height = 160, darkVariant = true)
+@Composable
+fun FramePreview(
+    @PreviewParameter(FrameFixtures::class) fixture: FrameFixture,
+) {
+    ScreenshotTheme {
+        CompositionLocalProvider(LocalWindowInfo provides FixedWindowInfo(isWindowFocused = true)) {
+            FrameLayout(
+                background = { Stripes(Modifier.matchParentSize()) },
+                titleBar = {
+                    FrameTitleBar(
+                        state = WindowState(),
+                        onCloseRequest = {},
+                        title = "AppFrame",
+                        showTitle = fixture.showTitle,
+                        icon = null,
+                        style = fixture.style,
+                        overBackground = true,
+                        menuBar = null,
+                        actions = {},
+                    )
+                },
+                modifier = Modifier.fillMaxSize(),
+            ) {
+                // Content that leaves a margin of the background showing around it.
+                Surface(
+                    modifier = Modifier.weight(1f).fillMaxWidth().padding(start = 24.dp, end = 24.dp, bottom = 24.dp),
+                    shape = RoundedCornerShape(12.dp),
+                    color = MaterialTheme.colorScheme.surface,
+                ) {
+                    Box(contentAlignment = Alignment.Center) { Text("Content") }
+                }
+            }
+        }
+    }
+}
+
+/** A background with a pattern, so it can be told apart from a flat bar colour at a glance. */
+@Composable
+private fun Stripes(modifier: Modifier) {
+    val base = MaterialTheme.colorScheme.tertiaryContainer
+    val stripe = MaterialTheme.colorScheme.primaryContainer
+    Canvas(modifier) {
+        drawRect(base)
+        val step = 24.dp.toPx()
+        var x = -size.height
+        while (x < size.width) {
+            drawLine(stripe, Offset(x, size.height), Offset(x + size.height, 0f), strokeWidth = step / 2)
+            x += step
         }
     }
 }

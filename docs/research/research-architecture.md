@@ -118,6 +118,17 @@ AppKit refuses `toggleFullScreen:` for a borderless window while `WindowState.pl
 (`youndie/appframe#61`). The replacement waits for `SM_CXDRAG`'s default 4 px and restores before it
 moves (`TitleBarDrag.kt`). Consequence 4 is the price this may carry.
 
+### D4. A design that draws under the bar gets a slot, and the old signature stays (B-08)
+
+`AppFrame(background = …)` is drawn under the frame's column, and the bar turns transparent while it
+is set; `showTitle = false` draws no title and leaves the window's. Rejected: a bar colour alone,
+which shows only what is behind the column — nothing the caller draws; content running under the
+bar, which moves every existing layout or needs a flag and an inset; a field on `TitleBarStyle`, a
+data class whose constructor and `copy` change descriptors with each field. Adding parameters
+changes `AppFrame`'s JVM descriptor (§1.4), so 0.3.0's is kept as a `DeprecationLevel.HIDDEN`
+overload that calls the new one: the price is a second `AppFrame` in the source, invisible to
+callers. [B-08](../backlog/B-08-background-under-the-title-bar.md).
+
 ---
 
 ## 3. Hypotheses, each with the item that answers it

@@ -15,7 +15,21 @@ new, empty `Unreleased` above it.
 
 ## [Unreleased]
 
-_Nothing yet._
+### Added
+
+- `AppFrame(background: (@Composable BoxScope.() -> Unit)? = null)` draws under the whole frame,
+  title bar included and inside the window's rounded corners; while it is set the bar draws no
+  surface of its own, so the background shows through it. The controls, the double click, the drag
+  by the bar and the resize strip are unchanged, and the bar's presses do not reach the background
+  (B-08).
+- `AppFrame(showTitle: Boolean = true)`: `false` keeps `title` for the window — the Dock, the
+  taskbar, the window switcher — and draws none in the bar (B-08).
+
+Both default to what 0.3.0 drew. They sit after `actions` and before `content`, so a call with a
+trailing `content` lambda compiles unchanged; one that passes `content` by position inside the
+parentheses has to name it. 0.3.0's `AppFrame` is still in the jar, hidden from source, so code
+compiled against 0.3.0 keeps linking — `javap` shows `AppFrame-AlbwjTQ` with its 0.3.0 descriptor
+next to the new method.
 
 ## [0.3.0] — 2026-11-04
 
