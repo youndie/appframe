@@ -23,6 +23,7 @@ A stage is a field on the item, not a directory.
 |---|---|---|
 | `stage-first-contact` | First contact | What a newcomer reads before and while upgrading: the changelog, the upgrade notes, the README. |
 | `stage-native-behaviour` | Native behaviour | What a system frame gives a window for free, checked by hand on the desktop in question, then made to work or refused in writing. |
+| `stage-custom-frames` | Custom frames | What a design that is not Material's needs from the frame: drawing under the bar, leaving parts of it out, while the controls, the drag and the resize stay appframe's. |
 | `stage-outreach` | Outreach | Telling people. The owner's decisions only. |
 
 ## Order of work
@@ -37,6 +38,8 @@ A stage is a field on the item, not a directory.
 3. [B-03](docs/backlog/B-03-linux-wayland-gnome.md) needs a GNOME Wayland desktop.
 4. [B-06](docs/backlog/B-06-announce-0-3-0.md) is closed: nothing goes to jetc.dev and no post for
    now (the owner, 2026-11-09).
+5. [B-08](docs/backlog/B-08-background-under-the-title-bar.md) came from a caller's design and
+   depends on nothing above; it goes out as a `0.3.1.<run>` build.
 
 ## Marks
 
@@ -44,12 +47,13 @@ A stage is a field on the item, not a directory.
 
 <!-- BEGIN INDEX -->
 
-## Open (5)
+## Open (6)
 
 | Task | | Priority | Size | Blocked by |
 |---|---|---|---|---|
 | [B-02](docs/backlog/B-02-windows-snap.md) `[ ]` | Windows 11: find out whether Snap Layouts and Aero Snap work on an AppFrame window, and act on the answer | P1 | M | B-07 |
 | [B-07](docs/backlog/B-07-windows-hand-check.md) `[?]` | Owner: one sitting at Windows 11 — snapping, two monitors and the edge scrollbar on an AppFrame window, checked by hand | P1 | S | - |
+| [B-08](docs/backlog/B-08-background-under-the-title-bar.md) `[~]` | Let a caller draw behind the whole frame, title bar included, and keep the window's title out of the bar | P1 | M | - |
 | [B-03](docs/backlog/B-03-linux-wayland-gnome.md) `[?]` | Linux, GNOME on Wayland: check that an AppFrame window moves and resizes, on the JetBrains Runtime and on Temurin | P2 | M | - |
 | [B-04](docs/backlog/B-04-document-the-resize-border.md) `[?]` | Tell README readers about the resize strip and resizeBorder, and check by hand that a thinner border frees an edge scrollbar | P2 | S | - |
 | [B-05](docs/backlog/B-05-multi-monitor-on-windows.md) `[ ]` | Windows with two monitors: check the README's multi-monitor claim, or narrow it | P2 | S | B-07 |
