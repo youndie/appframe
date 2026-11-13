@@ -96,6 +96,32 @@ AppFrame(onCloseRequest = ::exitApplication, resizeBorder = 4.dp) { /* content *
 stays 8 dp so that nothing changes for an existing window. The sample's **View ▸ Edge scrollbar**
 and **View ▸ Resize border** show the case.
 
+### Drawing under the title bar
+
+By default the title bar is a strip of `MaterialTheme.colorScheme.surfaceVariant` and the content
+starts below it. A design whose window background runs under the bar — a texture, a gradient, an
+image — passes that background to `AppFrame` instead:
+
+```kotlin
+AppFrame(
+    onCloseRequest = ::exitApplication,
+    title = "My App",            // still the window's title: the Dock, the taskbar, the switcher
+    showTitle = false,           // but not drawn in the bar
+    background = { Stage(Modifier.matchParentSize()) },
+    actions = { RecordButton() },
+) {
+    App(Modifier.weight(1f))     // draw nothing where the stage should show through
+}
+```
+
+`background` is drawn under the whole frame, the bar included, and inside the window's rounded
+corners; while it is set the bar draws no surface of its own. The window controls, the double click
+and the drag by the bar and the resize strip work as before, and the bar keeps every press on it to
+itself — none reaches the background. The bar's glyphs still take
+`MaterialTheme.colorScheme.onSurfaceVariant`. `showTitle = false` works with or without a background.
+
+The sample's **View ▸ Background under the title bar** and **View ▸ Title in the bar** show both.
+
 ### Choosing a layout explicitly
 
 `AppFrame` uses `TitleBarStyle.forHost()` by default. Any of the built-in styles — or a `copy()` of

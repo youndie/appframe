@@ -1,7 +1,7 @@
 package io.github.youndie.appframe
 
 import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxSize
@@ -83,6 +83,27 @@ private class AppFrameScopeImpl(
  * right edge is covered entirely, and its thumb shows a resize cursor and cannot be dragged. Keep
  * such content [resizeBorder] in from the edges, or pass a thinner border — `0.dp` removes the
  * strip, and the window can then no longer be resized by its edges.
+ *
+ * [background] is drawn under the whole frame, title bar included, inside the window's rounded
+ * corners — for a design whose window background runs under the bar: a texture, a gradient, an
+ * image. While it is set the bar draws no surface of its own and the background shows through it;
+ * the bar's controls, its double click and the drag by it work as before, and the bar still takes
+ * every press on it, so none reaches the background. Below the bar the background shows wherever
+ * the content draws nothing. The bar's glyphs keep `MaterialTheme.colorScheme.onSurfaceVariant`.
+ *
+ * [showTitle] `= false` keeps [title] for the system — the Dock, the taskbar, the window switcher —
+ * and draws none in the bar. The [icon], where the [style] draws one, stays.
+ *
+ * ```
+ * AppFrame(
+ *     onCloseRequest = ::exitApplication,
+ *     title = "My App",
+ *     showTitle = false,
+ *     background = { Stage(Modifier.matchParentSize()) },
+ * ) {
+ *     App(Modifier.weight(1f)) // draws nothing where the stage should show
+ * }
+ * ```
  */
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -100,6 +121,8 @@ public fun AppFrame(
     onKeyEvent: (KeyEvent) -> Boolean = { false },
     menuBar: (@Composable MenuBarScope.() -> Unit)? = null,
     actions: @Composable RowScope.() -> Unit = {},
+    showTitle: Boolean = true,
+    background: (@Composable BoxScope.() -> Unit)? = null,
     content: @Composable AppFrameScope.() -> Unit,
 ) {
     // Rounded corners need the window itself to be transparent — the corners are literally cut out
@@ -128,14 +151,58 @@ public fun AppFrame(
             transparent = transparent,
             onCloseRequest = onCloseRequest,
             title = title,
+            showTitle = showTitle,
             icon = icon,
             style = style,
             shortcuts = shortcuts,
             menuBar = menuBar,
             actions = actions,
+            background = background,
             content = content,
         )
     }
+}
+
+/**
+ * 0.3.0's [AppFrame], kept so that code compiled against 0.3.0 still links: a new parameter renames
+ * nothing, but it changes the JVM descriptor, and a library built on appframe would otherwise fail
+ * with `NoSuchMethodError` — the 0.2.0 → 0.3.0 break over again (CHANGELOG.md). Hidden, so source
+ * always resolves to the one above.
+ */
+@Deprecated("Kept for binary compatibility with 0.3.0", level = DeprecationLevel.HIDDEN)
+@Composable
+public fun AppFrame(
+    onCloseRequest: () -> Unit,
+    state: WindowState = rememberWindowState(size = DpSize(1024.dp, 720.dp)),
+    visible: Boolean = true,
+    title: String = "AppName",
+    icon: Painter? = null,
+    resizable: Boolean = true,
+    resizeBorder: Dp = 8.dp,
+    alwaysOnTop: Boolean = false,
+    style: TitleBarStyle = TitleBarStyle.forHost(),
+    onPreviewKeyEvent: (KeyEvent) -> Boolean = { false },
+    onKeyEvent: (KeyEvent) -> Boolean = { false },
+    menuBar: (@Composable MenuBarScope.() -> Unit)? = null,
+    actions: @Composable RowScope.() -> Unit = {},
+    content: @Composable AppFrameScope.() -> Unit,
+) {
+    AppFrame(
+        onCloseRequest = onCloseRequest,
+        state = state,
+        visible = visible,
+        title = title,
+        icon = icon,
+        resizable = resizable,
+        resizeBorder = resizeBorder,
+        alwaysOnTop = alwaysOnTop,
+        style = style,
+        onPreviewKeyEvent = onPreviewKeyEvent,
+        onKeyEvent = onKeyEvent,
+        menuBar = menuBar,
+        actions = actions,
+        content = content,
+    )
 }
 
 @Composable
@@ -144,11 +211,13 @@ private fun FrameWindowScope.AppFrameContent(
     transparent: Boolean,
     onCloseRequest: () -> Unit,
     title: String,
+    showTitle: Boolean,
     icon: Painter?,
     style: TitleBarStyle,
     shortcuts: MenuShortcutRegistry,
     menuBar: (@Composable MenuBarScope.() -> Unit)?,
     actions: @Composable RowScope.() -> Unit,
+    background: (@Composable BoxScope.() -> Unit)?,
     content: @Composable AppFrameScope.() -> Unit,
 ) {
     val fullscreen = remember { FullscreenFallback() }
@@ -177,23 +246,31 @@ private fun FrameWindowScope.AppFrameContent(
         MenuShortcuts(shortcuts, menuBar)
     }
 
-    Column(Modifier.fillMaxSize().then(clip)) {
-        CompositionLocalProvider(
-            LocalAppFrameWindow provides window,
-            LocalFullscreenFallback provides fullscreen,
-        ) {
-            TitleBarDragArea {
-                TitleBar(
-                    state = state,
-                    onCloseRequest = onCloseRequest,
-                    title = title,
-                    icon = icon,
-                    style = style,
-                    menuBar = menuBar,
-                    actions = actions,
-                )
+    // The background is inside the clip, so a rounded window cuts it at the corners like the rest.
+    FrameLayout(
+        background = background,
+        modifier = Modifier.fillMaxSize().then(clip),
+        titleBar = {
+            CompositionLocalProvider(
+                LocalAppFrameWindow provides window,
+                LocalFullscreenFallback provides fullscreen,
+            ) {
+                TitleBarDragArea {
+                    FrameTitleBar(
+                        state = state,
+                        onCloseRequest = onCloseRequest,
+                        title = title,
+                        showTitle = showTitle,
+                        icon = icon,
+                        style = style,
+                        overBackground = background != null,
+                        menuBar = menuBar,
+                        actions = actions,
+                    )
+                }
             }
-        }
+        },
+    ) {
         val scope = remember(this, this@AppFrameContent) { AppFrameScopeImpl(this, this@AppFrameContent) }
         scope.content()
     }

@@ -12,6 +12,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 
@@ -25,8 +26,9 @@ fun App(
     onSelect: (String) -> Unit,
     lastCommand: String,
     modifier: Modifier = Modifier,
+    color: Color = MaterialTheme.colorScheme.surface,
 ) {
-    Surface(modifier, color = MaterialTheme.colorScheme.surface) {
+    Surface(modifier, color = color) {
         Column(
             modifier = Modifier.fillMaxSize().padding(24.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically),

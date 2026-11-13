@@ -9,6 +9,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.application
@@ -35,6 +36,8 @@ fun main() =
             var lastCommand by remember { mutableStateOf("—") }
             var resizeBorder by remember { mutableStateOf(ResizeBorders.first()) }
             var edgeScrollbar by remember { mutableStateOf(false) }
+            var stage by remember { mutableStateOf(false) }
+            var showTitle by remember { mutableStateOf(true) }
 
             val style =
                 styleOf(platform).copy(
@@ -46,6 +49,8 @@ fun main() =
                 title = "AppFrame",
                 style = style,
                 resizeBorder = resizeBorder,
+                showTitle = showTitle,
+                background = if (stage) ({ DemoStage(Modifier.matchParentSize()) }) else null,
                 menuBar = {
                     Menu("File") {
                         Item("New", shortcut = MenuShortcut.primary(Key.N)) { lastCommand = "File ▸ New" }
@@ -70,6 +75,16 @@ fun main() =
                             text = "Edge scrollbar",
                             checked = edgeScrollbar,
                             onCheckedChange = { edgeScrollbar = it },
+                        )
+                        CheckboxItem(
+                            text = "Background under the title bar",
+                            checked = stage,
+                            onCheckedChange = { stage = it },
+                        )
+                        CheckboxItem(
+                            text = "Title in the bar",
+                            checked = showTitle,
+                            onCheckedChange = { showTitle = it },
                         )
                         Menu("Resize border") {
                             ResizeBorders.forEach { candidate ->
@@ -100,6 +115,8 @@ fun main() =
                         onSelect = { platform = it },
                         lastCommand = lastCommand,
                         modifier = Modifier.weight(1f),
+                        // Over the background the content leaves it showing, as a design with one would.
+                        color = if (stage) Color.Transparent else MaterialTheme.colorScheme.surface,
                     )
                 }
             }

@@ -2,14 +2,16 @@
 
 Recorded PNGs live here. **Record them wherever you work** — the fixtures draw in viddik's bundled
 Roboto (`viddikTypography()`), so the same PNG comes out of a macOS laptop and an `ubuntu-latest`
-runner alike. Recorded on both and compared byte for byte, all eighteen are identical.
+runner alike. Recorded on both and compared byte for byte, the eighteen of the title bar are
+identical; the six of the frame over a background (B-08) were recorded on Linux and are verified on
+all three of CI's runners.
 
 ```shell
 ./gradlew :appframe:viddikRecord   # record; look at the PNGs, then commit them
 ./gradlew :appframe:viddikVerify   # verify (also part of `check`, so `./gradlew build` runs it)
 ```
 
-Add `--component "Linux GNOME"` to either one to work on a single layout instead of all eighteen.
+Add `--component "Linux GNOME"` to either one to work on a single layout instead of all twenty-four.
 
 Record mode does not validate anything — look at the PNGs before committing.
 
